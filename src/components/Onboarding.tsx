@@ -6,9 +6,11 @@ type OnboardingProps = {
     text: string;
     buttonLabel: string;
     onPress: () => void;
+    onPress2?: () => void;
+    buttonLabel2?: string;
 };
 
-const Onboarding = ({ header, text, buttonLabel, onPress }: OnboardingProps) => {
+const Onboarding = ({ header, text, buttonLabel, onPress, onPress2, buttonLabel2 }: OnboardingProps) => {
 
 
     return (
@@ -22,6 +24,11 @@ const Onboarding = ({ header, text, buttonLabel, onPress }: OnboardingProps) => 
             <TouchableOpacity style={styles.button} onPress={onPress}>
                 <Text style={styles.buttonLabel}>{buttonLabel}</Text>
             </TouchableOpacity>
+            {onPress2 && buttonLabel2 && (
+                <TouchableOpacity style={styles.button2} onPress={onPress2}>
+                    <Text style={styles.buttonLabel}>{buttonLabel2}</Text>
+            </TouchableOpacity>
+            )}
         </View>
 
         
@@ -68,6 +75,15 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         position: 'absolute',
         bottom: 50,
+    },
+    button2: {
+        backgroundColor: '#f7691a',
+        paddingHorizontal: 100,
+        paddingVertical: 10,
+        borderRadius: 15,
+        alignSelf: 'center',
+        position: 'absolute',
+        bottom: 110,
     },
     buttonLabel: {
         color: '#fff',

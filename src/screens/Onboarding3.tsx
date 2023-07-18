@@ -4,21 +4,22 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigators/MyStack";
 
-const Onboarding1 = () => {
+const Onboarding3 = () => {
 
       const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
 
     return (
         <Onboarding
-            header="Take the Lead"
-            text="Embrace the freedom of being your own boss.
-                  With our courier app, enjoy flxible hours and 
-                  control your earnings."
-            buttonLabel= "Get Started"
-            onPress={() => navigation.navigate('Onboarding3')}
+            header="Ready?"
+            text="Ready to kickstart your courier journey?
+                  Sign up or log in now to get the fun started."
+            buttonLabel="Sign up"
+            buttonLabel2="Log In"
+            onPress={() => navigation.navigate('Signup')}
+            onPress2={() => navigation.navigate('Login')}
         />
     );
 
 }
 
-export default Onboarding1;
+export default Onboarding3;
