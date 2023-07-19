@@ -59,6 +59,9 @@ const AuthForm = ({
       case 'username':
         error = validateName(values[field.fieldName] || '');
         break;
+      case 'surename':
+        error = validateName(values[field.fieldName] || '');
+        break;
       case 'email':
         error = validateEmail(values[field.fieldName] || '');
         break;

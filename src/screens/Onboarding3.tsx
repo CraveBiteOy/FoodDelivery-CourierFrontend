@@ -6,7 +6,14 @@ import { RootStackParamList } from "../navigators/MyStack";
 
 const Onboarding3 = () => {
 
-      const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
+    
+    //prevent the user from going back to the previous screen
+    React.useEffect(() => {
+        navigation.addListener('beforeRemove', (e) => {
+            e.preventDefault();
+        });
+    }, [navigation]);
 
     return (
         <Onboarding

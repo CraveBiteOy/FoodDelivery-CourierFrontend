@@ -1,16 +1,22 @@
 
 import React from 'react';
 import AuthForm from '../components/AuthForm';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../navigators/MyStack';
 
 
 const Login = () => {
+
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
 
     const handleLogin = () => {
         //EMPTY NOW
     };
 
     const handleSignupPrompt = () => {
-        //EMPTY NOW
+        navigation.navigate('Signup');     
+
     };
 
     const loginFields = [
