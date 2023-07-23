@@ -36,4 +36,6 @@ export interface UserRegisterForm {
     firstname: string,
     surename: string,
     password: string,
+    longitude: number,
+    latitude: number
 }

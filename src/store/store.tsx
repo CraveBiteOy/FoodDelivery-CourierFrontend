@@ -6,7 +6,7 @@ import thunk from 'redux-thunk';
 
 
 
-export const HOST_URL= "http://169.254.23.245:8080";
+export const HOST_URL= "http://100.65.142.79:8080";
 const initialState= {};
 
 const rootReducer = combineReducers({

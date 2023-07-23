@@ -3,15 +3,36 @@ import React from 'react';
 import AuthForm from '../components/AuthForm';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootState } from '../store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../store/actions/UserAction';
 import { RootStackParamList } from '../navigators/MyStack';
 
 
 const Login = () => {
 
-    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
+    const dispatch = useDispatch();
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+    const authState = useSelector((state: RootState) => state.USERS);
+    
 
-    const handleLogin = () => {
-        //EMPTY NOW
+    React.useEffect(() => {
+        if (authState.authSuccess) {
+            navigation.navigate('Home');
+        }
+    }, [authState.authSuccess, navigation]);
+
+    const handleLogin = (formData: Record<string, string>) => {
+        const { Username, Password } = formData;
+        dispatch(
+            login({
+                // username: Email,
+                username: Username,
+                password: Password,
+                longitude: 0.32444,
+                latitude: 0.314444
+            }) as any
+        );
     };
 
     const handleSignupPrompt = () => {
@@ -20,7 +41,7 @@ const Login = () => {
     };
 
     const loginFields = [
-        { label: 'Email', fieldName: 'Email' },
+        { label: 'Username', fieldName: 'Username' },
         { label: 'Password', fieldName: 'Password' },
     ]
 

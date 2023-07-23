@@ -32,7 +32,7 @@ const loginFailure = (error: unknown) => ({
   payload: error,
 });
 
-export const Register = (registerForm: UserRegisterForm) => async (dispatch: Dispatch<ACTION>, getState: any) => {
+export const register = (registerForm: UserRegisterForm) => async (dispatch: Dispatch<ACTION>, getState: any) => {
 
     try {
       const response = await axios.post(`${HOST_URL}/api/users/signup`, registerForm);

@@ -6,7 +6,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigators/MyStack';
 import { RootState } from '../store/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { Register } from '../store/actions/UserAction';
+import { register } from '../store/actions/UserAction';
 import { Text } from 'react-native';
 
 
@@ -25,11 +25,14 @@ const Signup = () => {
   const handleSignup = (formData: Record<string, string>) => {
   const { Username, Surename, Email, Password } = formData;
   dispatch(
-    Register({
-      username: Email,
+    register({
+      // username: Email,
+      username: Username,
       firstname: Username,
       surename: Surename,
       password: Password,
+      longitude: 0.32444,
+      latitude: 0.314444
     }) as any
   );
 };
