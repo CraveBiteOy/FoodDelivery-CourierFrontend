@@ -11,7 +11,7 @@ const Header = ({ onMenuPress }: HeaderProps) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={onMenuPress}>
-        <Icon name="menu" size={24} />
+        <Icon name="navicon" size={24}/>
       </TouchableOpacity>
       <Text style={styles.title}>Home</Text>
       <View style={{ width: 24 }} />
