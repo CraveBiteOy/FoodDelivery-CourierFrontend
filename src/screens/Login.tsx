@@ -3,40 +3,40 @@ import React from 'react';
 import AuthForm from '../components/AuthForm';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootState } from '../store/store';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { login } from '../store/actions/UserAction';
 import { RootStackParamList } from '../navigators/MyStack';
+import { getLocation } from '../utils/location';
 
 
 const Login = () => {
 
     const dispatch = useDispatch();
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-    const authState = useSelector((state: RootState) => state.USERS);
-    
 
-    React.useEffect(() => {
-        if (authState.authSuccess) {
-            navigation.navigate('Home');
-        }
-    }, [authState.authSuccess, navigation]);
-
-    const handleLogin = (formData: Record<string, string>) => {
+    const handleLogin = async (formData: Record<string, string>) => {
         const { Username, Password } = formData;
-        dispatch(
-            login({
-                // username: Email,
-                username: Username,
-                password: Password,
-                longitude: 0.32444,
-                latitude: 0.314444
-            }) as any
-        );
+        const location = await getLocation();
+
+        if (location) {
+            const { latitude, longitude } = location;
+            dispatch(
+                login({
+                    username: Username,
+                    password: Password,
+                    longitude,
+                    latitude
+                },
+                    navigation
+                ) as any
+            );
+        } else {
+            console.log('error');
+        }
     };
 
     const handleSignupPrompt = () => {
-        navigation.navigate('Signup');     
+        navigation.navigate('Signup');
 
     };
 
@@ -56,7 +56,7 @@ const Login = () => {
         />
     )
 
-  
+
 }
 
 export default Login;

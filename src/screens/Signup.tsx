@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import AuthForm from '../components/AuthForm';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -8,6 +8,8 @@ import { RootState } from '../store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { register } from '../store/actions/UserAction';
 import { Text } from 'react-native';
+import { getLocation } from '../utils/location';
+
 
 
 const Signup = () => {
@@ -15,28 +17,29 @@ const Signup = () => {
     const dispatch = useDispatch();
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
     const authState = useSelector((state : RootState) => state.USERS);
-    
-     useEffect(() => {
-    if (authState.authSuccess) {
-      navigation.navigate('Login');
-    }
-  }, [authState.authSuccess, navigation]);
 
-  const handleSignup = (formData: Record<string, string>) => {
-  const { Username, Surename, Email, Password } = formData;
-  dispatch(
-    register({
-      // username: Email,
-      username: Username,
-      firstname: Username,
-      surename: Surename,
-      password: Password,
-      longitude: 0.32444,
-      latitude: 0.314444
-    }) as any
-  );
-};
-
+    const handleSignup = async (formData: Record<string, string>) => {
+    const { Username, Surename, Email, Password } = formData;
+    const location = await getLocation();
+  
+    if (location) {
+      const { latitude, longitude } = location;
+      dispatch(
+        register({
+          username: Username,
+          firstname: Username,
+          surename: Surename,
+          password: Password,
+          longitude,
+          latitude
+        },
+            navigation
+        ) as any
+      );
+    } else {
+      console.log('error');
+      }
+    };
 
     const handleLoginPrompt = () => {
         navigation.navigate('Login');
@@ -67,7 +70,6 @@ const Signup = () => {
     </>
     )
 
-  
 }
 
 export default Signup;

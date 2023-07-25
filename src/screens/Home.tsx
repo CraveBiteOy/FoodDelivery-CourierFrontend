@@ -5,15 +5,19 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import Header from '../components/Header';
-import MapView from '../components/MapView';
+import Map from '../views/other/Map';
 import Sheet from '../components/Sheet';
 import BottomSheet from '@gorhom/bottom-sheet';
 import HamburgerMenu from '../components/HamburgerMenu';
 import { RootStackParamList } from '../navigators/MyStack';
+import {logoutUtil} from '../utils/logout';
+import { useDispatch } from 'react-redux';
+
 
 const Home = () => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+    const dispatch = useDispatch();
 
   const toggleMenu = () => {
     setIsMenuVisible((prevState) => !prevState);
@@ -35,13 +39,14 @@ const Home = () => {
   };
 
   const handleLogoutPress = () => {
-    // TODO: implement logout
+    setIsMenuVisible(false);
+    logoutUtil(dispatch, navigation);
   };
 
   return (
     <View style={{ flex: 1 }}>
       <Header onMenuPress={toggleMenu} />
-      <MapView />
+      <Map />
       {isMenuVisible && (
         <TouchableOpacity
           activeOpacity={1}
