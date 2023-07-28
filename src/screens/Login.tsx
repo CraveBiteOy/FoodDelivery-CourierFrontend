@@ -4,7 +4,7 @@ import AuthForm from '../components/AuthForm';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useDispatch } from 'react-redux';
-import { login } from '../store/actions/UserAction';
+import { login, registerAsCourier } from '../store/actions/UserAction';
 import { RootStackParamList } from '../navigators/MyStack';
 import { getLocation } from '../utils/location';
 
@@ -30,6 +30,7 @@ const Login = () => {
                     navigation
                 ) as any
             );
+            dispatch(registerAsCourier() as any);
         } else {
             console.log('error');
         }

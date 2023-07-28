@@ -112,3 +112,26 @@ const logoutFailure = () => ({
   type: "USER_ERROR",
   payload: "logout failed",
 });
+
+export const registerAsCourier = () => async (dispatch: Dispatch<ACTION>, getState: any) => {
+    try {
+      const response = await axios.get('/api/couriers/courier/authenticated');
+      const courier = response.data;
+      console.log("courier "+ courier)
+      dispatch(registerAsCourierSuccess(courier));
+    } catch (error) {
+      dispatch(registerAsCourierFailure(error));
+    
+    }
+};
+
+const registerAsCourierSuccess = (data: any) => ({
+  type: "REGISTER_AS_COURIER_SUCCESS",
+  payload: data,
+});
+
+const registerAsCourierFailure = (error: unknown) => ({
+  type: "REGISTER_AS_COURIER_FAILURE",
+  payload: error,
+});
+

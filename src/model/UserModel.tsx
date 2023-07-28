@@ -17,6 +17,10 @@ export interface declaredStateUser  {
     message: string | null,
     authSuccess: boolean,
     authError: boolean
+    courier: any;
+    registerAsCourierSuccess: boolean;
+    registerAsCourierError: boolean;
+    
 }
 
 export interface ACTION {

@@ -1,6 +1,8 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import UserReducer from './reducers/UserReducer';
+import CourierReducer from './reducers/CourierReducer';
+import OrderReducer from './reducers/OrderReducer';
 
 import thunk from 'redux-thunk';
 
@@ -11,6 +13,8 @@ const initialState= {};
 
 const rootReducer = combineReducers({
     USERS: UserReducer,
+    COURIERS: CourierReducer,
+    ORDER: OrderReducer
 });
 
 const middleware = [thunk];

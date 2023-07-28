@@ -7,7 +7,10 @@ let initialState = {
     userUpdated: {},
     message: null,
     authSuccess: false,
-    authError: false
+    authError: false,
+    courier: {},
+    registerAsCourierSuccess: false,
+    registerAsCourierError: false,
 }
 
 export default (state: declaredStateUser = initialState, action: ACTION) => {
@@ -45,6 +48,18 @@ export default (state: declaredStateUser = initialState, action: ACTION) => {
                 message: action.payload,
                 authError: true
             }
+         case "REGISTER_AS_COURIER_SUCCESS":
+            return {
+                ...state,
+                courier: action.payload,
+                registerAsCourierSuccess: true
+            };
+        case "REGISTER_AS_COURIER_FAILURE":
+            return {
+                ...state,
+                message: action.payload,
+                registerAsCourierError: true
+            };
         default:
             return state
     }
