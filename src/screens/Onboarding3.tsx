@@ -22,10 +22,10 @@ const Onboarding3 = () => {
                   Sign up or log in now to get the fun started."
             buttonLabel="Sign up"
             buttonLabel2="Log In"
-            onPress={() => navigation.navigate('Signup')}
-            onPress2={() => navigation.navigate('Login')}
-            // onPress={() => navigation.navigate('Home')}
-            // onPress2={() => navigation.navigate('Home')}
+            // onPress={() => navigation.navigate('Signup')}
+            // onPress2={() => navigation.navigate('Login')}
+            onPress={() => navigation.navigate('Home')}
+            onPress2={() => navigation.navigate('Home')}
         />
     );
 

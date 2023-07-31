@@ -1,31 +1,57 @@
 
 
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import {Checkbox, DataTable} from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import { pickUpOrder } from '../../store/actions/OrderAction';
+import { OrderItem } from '../../model/OrderModel';
 
 
 const PickUpView = () => {
+    const { activeOrder, orderItems } = useSelector((state: RootState) => state.ORDERS);
+    const dispatch = useDispatch();
+    const [checkedItems, setCheckedItems] = useState<Record<number, boolean>>({});
+
+    const PickUpOrder = () => {
+        console.log("Picked up");
+        dispatch(pickUpOrder(activeOrder.id) as any);
+    }
+
+    // function to handle the check box
+    const handleCheckItem = (itemId: number) => {
+        setCheckedItems((prev) => ({
+            ...prev, [itemId]: !prev[itemId],
+        }));
+    };
+
+    // boolean to check if all items are checked
+    const allItemsChecked = orderItems.every((item: OrderItem) => checkedItems[item.id])
 
     return (
         <View>
             <View style={styles.restaurant_info}>
                 <Text style={styles.header}>Restaurant</Text>
-                <Text style={styles.value}>Restaurant Name</Text>
-                <Text style={styles.value}>Restaurant Address</Text>
+                {/* <Text style={styles.value}>Restaurant Name</Text> */}
+                <Text style={styles.value}>{activeOrder?.restaurant?.name}</Text>
+                {/* <Text style={styles.value}>Restaurant Address</Text> */}
+                <Text style={styles.restaurant_address}>{activeOrder?.restaurant?.address}</Text>
             </View>
             <View style={styles.customer_container}>
                 <Text style={styles.header}>Customer details</Text>
                 <View style={styles.customer_details}>
                     <View style={styles.customer_n}>
                         <Text style={styles.customer_header}>Name</Text>
-                        <Text style={styles.value}>Hajri</Text>
+                        {/* <Text style={styles.value}>Hajri</Text> */}
+                        <Text style={styles.value}>{activeOrder?.customer?.user?.firstname}</Text>
                     </View>
                     <View style={styles.line}>
                     </View>
                     <View style={styles.customer_n}>
                         <Text style={styles.customer_header}>Order No.</Text>
-                        <Text style={styles.value}>#122</Text>
+                        {/* <Text style={styles.value}>#122</Text> */}
+                        <Text style={styles.value}>#{activeOrder?.id}</Text>
                     </View>
                 </View>
             </View>
@@ -37,7 +63,7 @@ const PickUpView = () => {
                         <DataTable.Title numeric>Qty.</DataTable.Title>
                         <DataTable.Title numeric>check</DataTable.Title>
                     </DataTable.Header>
-                    <DataTable.Row style={styles.tableRow}>
+                    {/* <DataTable.Row style={styles.tableRow}>
                         <DataTable.Cell>Item 1</DataTable.Cell>
                         <DataTable.Cell numeric>2</DataTable.Cell>
                         <DataTable.Cell numeric>
@@ -50,11 +76,28 @@ const PickUpView = () => {
                         <DataTable.Cell numeric>
                                 <Checkbox status="checked" />
                         </DataTable.Cell>
-                    </DataTable.Row>
+                    </DataTable.Row> */}
+                    {orderItems.map((item: OrderItem) => (
+                        <DataTable.Row style={styles.tableRow}>
+                            <DataTable.Cell>{item?.dish?.name}</DataTable.Cell>
+                            <DataTable.Cell numeric>{item?.quantity}</DataTable.Cell>
+                            <DataTable.Cell numeric>
+                                <Checkbox
+                                    status={checkedItems[item.id] ? 'checked' : 'unchecked'}
+                                    onPress={() => handleCheckItem(item.id)}
+                                />
+                            </DataTable.Cell>
+                        </DataTable.Row>
+                    ))}
                 </DataTable>
             </View>
             <View style={styles.button_box}>
-            <TouchableOpacity style={styles.button}>
+                {/* <TouchableOpacity style={styles.button} onPress={PickUpOrder}> */}
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={PickUpOrder}
+                    disabled={!allItemsChecked}
+                >
                 <Text style={styles.button_text}>Confirm pickup</Text>
                 </TouchableOpacity>
             </View>

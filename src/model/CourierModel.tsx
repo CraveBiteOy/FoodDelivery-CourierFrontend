@@ -18,9 +18,8 @@ export enum NavigationMode {
   CAR = "CAR",
 }
 
-// Enum for representing the status of an order
 export enum OrderStatus {
-  NEW = "NEW",
+  SENT_TO_COUIER = "COOKING",
   READY = "READY_FOR_PICKUP",
   ACCEPTED = "COURIER_ACCEPTED",
   REJECTED = "COURIER_REJECTED",

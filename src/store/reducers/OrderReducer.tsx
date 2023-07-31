@@ -1,9 +1,10 @@
 import { ACTION } from "../../model/UserModel";
-import { OrderState, OrderStatus, } from "../../model/OrderModel";
+import { OrderState } from "../../model/OrderModel";
 
 const initialState: OrderState = {
   activeOrder: {},
   message: null,
+  orderItems: [],
 };
 
 export default (state = initialState, action: ACTION) => {
@@ -28,11 +29,16 @@ export default (state = initialState, action: ACTION) => {
           return {
             ...state,
           };
-      case "UPDATE_ORDER":
+      case "UPDATE_ORDER_FROM_WEBSOCKET":
           return {
               ...state,
                 activeOrder: action.payload,
-          };
+      };
+    case "GET_ORDER_ITEMS_BY_ID":
+      return {
+        ...state,
+        orderItems: action.payload,
+      };
     default:
       return state;
   }

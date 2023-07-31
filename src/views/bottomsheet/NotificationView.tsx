@@ -1,15 +1,40 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import CountdownTimer from '../../components/CountdownTimer';
+import { RootState } from '../../store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { acceptOrder } from '../../store/actions/OrderAction';
 
-const NotificationView = () => {
+type NotificationViewProps = {
+  onComplete: () => void;
+};
+
+const NotificationView = ({ onComplete }: NotificationViewProps) => {
+
+    
+    const { activeOrder } = useSelector((state: RootState) => state.ORDERS);
+    const dispatch = useDispatch();
+
+    function handleComplete(): void {
+        onComplete();
+        console.log('completed');
+    }
+
+    const ActiveOrder = () => {
+        console.log("Accepted");
+        dispatch(acceptOrder(activeOrder.id) as any);
+    }
+
+
 
     return (
         <View>
             <View style={styles.first_row}>
                 <Text style={styles.text}>New Order!</Text>
                 <View style={styles.circle}>
-                    <Text>40s</Text>
+                    {/* <Text>40s</Text> */}
+                    <CountdownTimer duration={40} onComplete={handleComplete} />
+                     {/* <CountdownTimer duration={40} /> */}
                 </View>
             </View>
             <View style={styles.second_row}>
@@ -24,11 +49,13 @@ const NotificationView = () => {
                     <View style={styles.trip_info}>
                         <View>
                             <Text style={styles.from}>from</Text>
-                            <Text style={styles.address}>address</Text>
+                            {/* <Text style={styles.address}>address</Text> */}
+                            <Text style={styles.address}>{activeOrder?.restaurant?.address}</Text>
                         </View>
                         <View>
                             <Text>to</Text>
-                            <Text style={styles.address}>address</Text>
+                            {/* <Text style={styles.address}>address</Text> */}
+                            <Text style={styles.address}>{activeOrder?.address}</Text>
                         </View>
 
                      </View>
@@ -36,16 +63,18 @@ const NotificationView = () => {
                 <View style={styles.second_column}>
                         <View>
                             <Text>price</Text>
-                        <Text style={styles.price}>5$</Text>
+                        {/* <Text style={styles.price}>5$</Text> */}
+                        <Text style={styles.price}>{activeOrder?.finalPrice}</Text>
                         </View>
                         <View>
                             <Text>total km</Text>
-                            <Text style={styles.distance}>2km</Text>
+                        {/* <Text style={styles.distance}>2km</Text> */}
+                        <Text style={styles.distance}>{activeOrder?.d2Distance}</Text>
                         </View>
                 </View>
             </View>
             <View style={styles.third_row}>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress= {ActiveOrder}>
                     <Text style={styles.button_text}>Accept</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button}>
@@ -72,7 +101,7 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         borderRadius: 25,
-        backgroundColor: 'orange',
+        // backgroundColor: 'orange',
         justifyContent: 'center',
         alignItems: 'center',
     },

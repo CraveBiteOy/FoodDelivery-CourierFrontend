@@ -1,26 +1,38 @@
 
-
 import { TouchableOpacity } from '@gorhom/bottom-sheet';
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { DataTable } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import { completeOrder } from '../../store/actions/OrderAction';
 
 
 const DropOffView = () => {
+
+    const { activeOrder } = useSelector((state: RootState) => state.ORDERS);
+    const dispatch = useDispatch();
+
+    const DropOffOrder = () => {
+        console.log("Dropped off");
+        dispatch(completeOrder(activeOrder.id) as any);
+    }
 
     return (
         <View style={styles.container}>
             <View style={styles.tite_container}>
                 <Text style={styles.main_title}>Drop off to</Text>
-                <Text style={styles.location_title}>location address</Text>
+                {/* <Text style={styles.location_title}>location address</Text> */}
+                <Text style={styles.location_title}>{activeOrder?.customer?.user?.firstName}</Text>
             </View>
             <View>
                 <Text style={styles.sub_header}>Address details</Text>
                 <View style={styles.address}>
                      <Icon name="map-marker" size={24} color="black" />
                     <View style={styles.b_container}>
-                        <Text style={styles.mini_header}>address</Text>
+                        {/* <Text style={styles.mini_header}>address</Text> */}
+                        <Text style={styles.mini_header}>{activeOrder?.address}</Text>
                     </View>
                 </View>
                 <View style={styles.table}>
@@ -48,13 +60,14 @@ const DropOffView = () => {
                     <Icon name="info-circle" size={24} color="black" />
                     <View style={styles.b_container}>
                         <Text style={styles.mini_header}>note</Text>
-                        <Text>please leave the order next to the gate! 
+                        {/* <Text>please leave the order next to the gate! 
                               call me if you the door code does not work.
-                        </Text>
+                        </Text> */}
+                        <Text>{activeOrder?.note}</Text>
                     </View>
                 </View>
                 <View style={styles.button_box}>
-                    <TouchableOpacity  style={styles.button}>
+                    <TouchableOpacity  style={styles.button} onPress={DropOffOrder}>
                         <Text style={styles.button_text}>Confirm dropoff</Text>
                     </TouchableOpacity>
                 </View>

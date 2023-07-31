@@ -14,7 +14,7 @@ const initialState= {};
 const rootReducer = combineReducers({
     USERS: UserReducer,
     COURIERS: CourierReducer,
-    ORDER: OrderReducer
+    ORDERS: OrderReducer
 });
 
 const middleware = [thunk];

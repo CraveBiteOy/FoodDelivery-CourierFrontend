@@ -2,18 +2,18 @@ import { Dispatch } from "react";
 import { ACTION } from "../../model/UserModel";
 import { HOST_URL } from "../store";
 import axios from "axios";
-import SockJS from "sockjs-client";
-import {over} from "stompjs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { CourierStatus } from "../../model/CourierModel";
+import { CourierStatus, NavigationMode } from "../../model/CourierModel";
 
 // Update the location of a courier
 export const updateCourierLocation = (longitude: number, latitude: number) => async (dispatch: Dispatch<ACTION>, getState: any) => {
     
   try {
+    const token = await AsyncStorage.getItem("token");
     const response = await axios.put(
-      `${HOST_URL}/api/courier/authenticated/longitude/${longitude}/latitude/${latitude}`
-    );
+      `${HOST_URL}/api/courier/authenticated/longitude/${longitude}/latitude/${latitude}`, {}, {
+      headers: { Authorization: token }
+    });
     dispatch(updateCourierLocationSuccess(response.data));
   } catch (error) {
     dispatch(updateCourierLocationFailure(error));
@@ -35,9 +35,11 @@ const updateCourierLocationFailure = (error: unknown) => ({
 export const updateCourierStatus = (status: CourierStatus) => async (dispatch: Dispatch<ACTION>, getState: any) => {
 
   try {
+    const token = await AsyncStorage.getItem("token");
     const response = await axios.put(
-      `${HOST_URL}/api/couriers/courier/authenticated/status/${status}`
-    );
+      `${HOST_URL}/api/couriers/courier/authenticated/status/${status}`, {}, {
+      headers: { Authorization: token }
+    });
     dispatch(updateCourierStatusSuccess(response.data));
   } catch (error) {
     dispatch(updateCourierStatusFailure(error));
@@ -55,12 +57,14 @@ const updateCourierStatusFailure = (error: unknown) => ({
 });
 
 // Update Couirer navigation mode
-export const updateCourierMode = (mode: string) => async (dispatch: Dispatch<ACTION>, getState: any) => {
+export const updateCourierMode = (mode: NavigationMode) => async (dispatch: Dispatch<ACTION>, getState: any) => {
   
-    try {
+  try {
+      const token = await AsyncStorage.getItem("token");
       const response = await axios.put(
-        `${HOST_URL}/api/couriers/courier/authenticated/mode/${mode}`
-      );
+        `${HOST_URL}/api/couriers/courier/authenticated/mode/${mode}`, {}, {
+      headers: { Authorization: token }
+    });
       dispatch(updateCourierModeSuccess(response.data));
      
     } catch (error) {

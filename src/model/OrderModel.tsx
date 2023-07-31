@@ -55,7 +55,7 @@ export interface Restaurant {
 
 // Enum for representing the status of an order
 export enum OrderStatus {
-  NEW = "NEW",
+  SENT_TO_COUIER = "COOKING",
   READY = "READY_FOR_PICKUP",
   ACCEPTED = "COURIER_ACCEPTED",
   REJECTED = "COURIER_REJECTED",
@@ -63,10 +63,27 @@ export enum OrderStatus {
   COMPLETED = "COMPLETED",
 }
 
+export interface OrderItem {
+  id: number;
+  quantity: number;
+  dish: {
+    id: number;
+    name: string;
+    imageurl: string | null;
+    description: string;
+    price: number;
+    availability: boolean;
+    restaurant: number;
+  };
+  order: number;
+}
+
+
 // Interface for representing the state of the application
 export interface OrderState {
   activeOrder: Order | {};
   message: string | null;
+  orderItems: OrderItem[];
 }
 
 // Interface for representing an action
