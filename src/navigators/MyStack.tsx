@@ -9,7 +9,7 @@ import Onboarding3 from '../screens/Onboarding3';
 import Signup from '../screens/Signup';
 import Login from '../screens/Login';
 import Profile from '../screens/Profile';
-import About from '../screens/About';
+import UpdateLocation from '../screens/UpdateLocation';
 import TransportationMode from '../screens/TransportationMode';
 
 import React from 'react';
@@ -23,7 +23,7 @@ export type RootStackParamList = {
     Login: undefined;
     Home: undefined;
     Profile: undefined;
-    About: undefined;
+    UpdateLocation: undefined;
     Transportation: undefined;
 };
 
@@ -42,7 +42,7 @@ const MyStack = () => {
                 <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
                 <Stack.Screen name="Home" component={Home}  options={{ headerShown: false }} />
                 <Stack.Screen name="Profile" component={Profile} />
-                <Stack.Screen name="About" component={About} />
+                <Stack.Screen name="UpdateLocation" component={UpdateLocation} />
                 <Stack.Screen name="Transportation" component={TransportationMode} />
             </Stack.Navigator>
         </NavigationContainer>

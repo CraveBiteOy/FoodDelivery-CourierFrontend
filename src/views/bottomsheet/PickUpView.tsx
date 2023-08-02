@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { pickUpOrder } from '../../store/actions/OrderAction';
 import { OrderItem } from '../../model/OrderModel';
+import { OrderStatus } from '../../model/OrderModel';
 
 
 const PickUpView = () => {
@@ -16,7 +17,14 @@ const PickUpView = () => {
 
     const PickUpOrder = () => {
         console.log("Picked up");
-        dispatch(pickUpOrder(activeOrder.id) as any);
+        console.log("order items are : " +orderItems);
+        if (activeOrder && activeOrder.status === OrderStatus.READY) {
+            dispatch(pickUpOrder(activeOrder.id) as any);
+        }
+        else {
+            //alerts
+            console.log("Order is not marked as ready by the restaurant yet");
+        }
     }
 
     // function to handle the check box
@@ -63,22 +71,8 @@ const PickUpView = () => {
                         <DataTable.Title numeric>Qty.</DataTable.Title>
                         <DataTable.Title numeric>check</DataTable.Title>
                     </DataTable.Header>
-                    {/* <DataTable.Row style={styles.tableRow}>
-                        <DataTable.Cell>Item 1</DataTable.Cell>
-                        <DataTable.Cell numeric>2</DataTable.Cell>
-                        <DataTable.Cell numeric>
-                              <Checkbox status="unchecked" />
-                        </DataTable.Cell>
-                    </DataTable.Row>
-                    <DataTable.Row style={styles.tableRow}>
-                        <DataTable.Cell>Item 2</DataTable.Cell>
-                        <DataTable.Cell numeric>1</DataTable.Cell>
-                        <DataTable.Cell numeric>
-                                <Checkbox status="checked" />
-                        </DataTable.Cell>
-                    </DataTable.Row> */}
                     {orderItems.map((item: OrderItem) => (
-                        <DataTable.Row style={styles.tableRow}>
+                        <DataTable.Row key={item.id} style={styles.tableRow}>
                             <DataTable.Cell>{item?.dish?.name}</DataTable.Cell>
                             <DataTable.Cell numeric>{item?.quantity}</DataTable.Cell>
                             <DataTable.Cell numeric>

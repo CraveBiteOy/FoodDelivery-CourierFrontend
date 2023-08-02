@@ -9,11 +9,6 @@ const initialState: CourierState = {
 
 export default (state = initialState, action: ACTION) => {
   switch (action.type) {
-    case "UPDATE_COURIER_LOCATION":
-      return {
-        ...state,
-        courier: action.payload,
-      };
     case "UPDATE_COURIER_STATUS":
           return {
             ...state,
@@ -28,7 +23,17 @@ export default (state = initialState, action: ACTION) => {
           return {
             ...state,
             courier: action.payload,
-          };
+      };
+    case "COURIER_ERROR":
+      return {
+        ...state,
+        message: action.payload,
+      };
+    case "UPDATE_COURIER_LOCATION_BEFORE_PICKUP":
+      return {
+        ...state,
+        courier: action.payload,
+      };
     default:
       return state;
   }

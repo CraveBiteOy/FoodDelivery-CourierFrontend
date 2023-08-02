@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import CountdownTimer from '../../components/CountdownTimer';
 import { RootState } from '../../store/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { acceptOrder } from '../../store/actions/OrderAction';
+import { acceptOrder, getOrderItemsById, rejectOrder } from '../../store/actions/OrderAction';
 
 type NotificationViewProps = {
   onComplete: () => void;
@@ -18,11 +18,19 @@ const NotificationView = ({ onComplete }: NotificationViewProps) => {
     function handleComplete(): void {
         onComplete();
         console.log('completed');
+        dispatch(rejectOrder(activeOrder.id) as any);
+
     }
 
-    const ActiveOrder = () => {
+    const acceptOrderClicked = () => {
         console.log("Accepted");
         dispatch(acceptOrder(activeOrder.id) as any);
+        dispatch(getOrderItemsById(activeOrder?.id) as any);
+    }
+
+    const rejectOrderClicked = () => {
+        console.log("Rejected");
+        dispatch(rejectOrder(activeOrder.id) as any);
     }
 
 
@@ -32,9 +40,7 @@ const NotificationView = ({ onComplete }: NotificationViewProps) => {
             <View style={styles.first_row}>
                 <Text style={styles.text}>New Order!</Text>
                 <View style={styles.circle}>
-                    {/* <Text>40s</Text> */}
-                    <CountdownTimer duration={40} onComplete={handleComplete} />
-                     {/* <CountdownTimer duration={40} /> */}
+                    <CountdownTimer duration={20} onComplete={handleComplete} timeFormat='seconds' />
                 </View>
             </View>
             <View style={styles.second_row}>
@@ -64,20 +70,20 @@ const NotificationView = ({ onComplete }: NotificationViewProps) => {
                         <View>
                             <Text>price</Text>
                         {/* <Text style={styles.price}>5$</Text> */}
-                        <Text style={styles.price}>{activeOrder?.finalPrice}</Text>
+                        <Text style={styles.price}>{activeOrder?.deliveryFee.toFixed(0)} €</Text>
                         </View>
                         <View>
                             <Text>total km</Text>
                         {/* <Text style={styles.distance}>2km</Text> */}
-                        <Text style={styles.distance}>{activeOrder?.d2Distance}</Text>
+                        <Text style={styles.distance}>{activeOrder?.d2Distance.toFixed(0)} km</Text>
                         </View>
                 </View>
             </View>
             <View style={styles.third_row}>
-                <TouchableOpacity style={styles.button} onPress= {ActiveOrder}>
+                <TouchableOpacity style={styles.button} onPress= {acceptOrderClicked}>
                     <Text style={styles.button_text}>Accept</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress= {rejectOrderClicked}>
                     <Text style={styles.button_text}>Decline</Text>
                 </TouchableOpacity>
             </View>
@@ -110,7 +116,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     first_column: {
-        flex: 0.5,
+        flex: 0.6,
         borderRightWidth: 1,
         borderRightColor: 'grey',
         flexDirection: 'row',
@@ -141,14 +147,15 @@ const styles = StyleSheet.create({
     trip_info: {
         flexDirection: 'column',
         justifyContent: 'space-between',
-        alignItems: 'center',
     },
+
     from: {
         marginTop: 10,
        
     },
     address: {
         fontWeight: 'bold',
+         maxWidth: 150
     },
     price: {
         fontWeight: 'bold',

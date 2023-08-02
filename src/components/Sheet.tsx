@@ -4,7 +4,7 @@ import NotificationView from '../views/bottomsheet/NotificationView';
 import PickUpView from '../views/bottomsheet/PickUpView';
 import DropOffView from '../views/bottomsheet/DropOffView';
 import { OrderStatus } from '../model/CourierModel';
-import { Order } from '../model/OrderModel';
+// import { Order } from '../model/OrderModel';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthenticatedCourier } from '../store/actions/CourierAction';
 import { RootState } from '../store/store';
@@ -12,15 +12,14 @@ import { rejectOrder } from '../store/actions/OrderAction';
 
 export type sheetProps = {
   orderStatus: OrderStatus;
-  activeOrder: Order | null;
-  onOrderStageChange: (orderStatus: OrderStatus) => void;
 };
 
-const Sheet = ({ orderStatus, activeOrder, onOrderStageChange }: sheetProps) => {
+const Sheet = ({ orderStatus }: sheetProps) => {
   
   
   const dispatch = useDispatch();
-  const { courier } = useSelector((state: RootState) => state.COURIERS);
+  const { activeOrder } = useSelector((state: RootState) => state.ORDERS);
+
 
   //function to load the authenticated courier
   const loadAuthCourier = useCallback(async () => {
@@ -31,20 +30,15 @@ const Sheet = ({ orderStatus, activeOrder, onOrderStageChange }: sheetProps) => 
     loadAuthCourier();
   }, []);
 
-  useEffect(() => {
-    onOrderStageChange(orderStatus);
-  }
-    , [orderStatus, onOrderStageChange]);
-
+  
   /*function to handle the completion of count down timer; 
    *it is understood as the courier has rejected the order
   */
   const handleComplete = async () => {
-    if (courier !== null) {
-       dispatch(rejectOrder(courier.id) as any)
-      
-    };
-  };
+  if (activeOrder) {
+    dispatch(rejectOrder(activeOrder.id) as any);
+  }
+};
 
   let content;
   if (!activeOrder) {
@@ -56,6 +50,9 @@ const Sheet = ({ orderStatus, activeOrder, onOrderStageChange }: sheetProps) => 
         content = <NotificationView onComplete={handleComplete} />;
         break;
       case OrderStatus.ACCEPTED:
+        content = <PickUpView />;
+        break;
+      case OrderStatus.READY:
         content = <PickUpView />;
         break;
       case OrderStatus.PICKED_UP:

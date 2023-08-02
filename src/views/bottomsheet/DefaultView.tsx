@@ -4,13 +4,15 @@ import { getAuthenticatedCourier, updateCourierStatus } from '../../store/action
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { RootState } from '../../store/store';
-import { setupSocket } from '../../utils/setupSocket';
+import { closeSocket, setupSocket } from '../../utils/setupSocket';
 import { CourierStatus } from '../../model/CourierModel';
+import { getOrderItemsById } from '../../store/actions/OrderAction';
 
 const DefaultView = () => {
   const [isOnline, setIsOnline] = useState(false);
   const dispatch = useDispatch();
   const { courier } = useSelector((state: RootState) => state.COURIERS);
+  const { activeOrder, orderItems } = useSelector((state: RootState) => state.ORDERS);
 
   //function to load the authenticated courier
   const loadAuthCourier = useCallback(async () => {
@@ -25,9 +27,10 @@ const DefaultView = () => {
      if (courier !== null) {
       if (isOnline) {
         await dispatch(updateCourierStatus(CourierStatus.OFFLINE) as any);
+        closeSocket();
       } else {
         await dispatch(updateCourierStatus(CourierStatus.ONLINE) as any);
-        setupSocket(courier.id, dispatch);
+        await setupSocket(courier.id, dispatch);
       }
        setIsOnline(!isOnline);
        

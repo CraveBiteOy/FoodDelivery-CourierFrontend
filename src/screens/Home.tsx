@@ -13,14 +13,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import { OrderStatus } from '../model/CourierModel';
 
-
 const Home = () => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { activeOrder } = useSelector((state: RootState) => state.ORDERS);
+ 
   const dispatch = useDispatch();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const [currentSnapPoint, setCurrentSnapPoint] = useState(0);
+  
   const snapPoints = [100, 400, 600];
 
   const toggleMenu = () => {
@@ -39,7 +40,7 @@ const Home = () => {
 
   const handleAboutPress = () => {
     setIsMenuVisible(false);
-    navigation.navigate('About');
+    navigation.navigate('UpdateLocation');
   };
 
   const handleLogoutPress = () => {
@@ -47,13 +48,7 @@ const Home = () => {
     logoutUtil(dispatch, navigation);
   };
 
-  useEffect(() => {
-  bottomSheetModalRef.current?.present();
-   }, []);
-
-
-  const handleOrderStageChange = (orderStatus: OrderStatus) =>
-  {
+  const handleOrderStageChange = (orderStatus: OrderStatus) => {
     if (orderStatus === OrderStatus.SENT_TO_COUIER) {
       setCurrentSnapPoint(1);
     } else if (orderStatus === OrderStatus.ACCEPTED || orderStatus === OrderStatus.PICKED_UP) {
@@ -61,19 +56,14 @@ const Home = () => {
     } else {
       setCurrentSnapPoint(0);
     }
-    //create a visual effect to refresh the bottom sheet
-    bottomSheetModalRef.current?.dismiss();
-    setTimeout(() => {
-      bottomSheetModalRef.current?.present();
-    }, 500);
- };
+  };
 
-   useEffect(() => {
-  if (activeOrder) {
-    handleOrderStageChange(activeOrder.status);
-  }
+  useEffect(() => {
+    if (activeOrder) {
+      handleOrderStageChange(activeOrder.status);
+    }
+     bottomSheetModalRef.current?.present();
   }, [activeOrder]);
-
 
   return (
     <BottomSheetModalProvider>
@@ -99,12 +89,11 @@ const Home = () => {
           ref={bottomSheetModalRef}
           snapPoints={snapPoints}
           index={currentSnapPoint}
+          enablePanDownToClose={false}
         >
-          <Sheet
-            orderStatus={activeOrder.status}
-            activeOrder={activeOrder}
-            onOrderStageChange={handleOrderStageChange}
-          />
+            <Sheet
+              orderStatus={activeOrder?.status}
+              />
         </BottomSheetModal>
       </View>
     </BottomSheetModalProvider>

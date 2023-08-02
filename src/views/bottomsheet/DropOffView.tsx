@@ -16,6 +16,7 @@ const DropOffView = () => {
 
     const DropOffOrder = () => {
         console.log("Dropped off");
+        console.log(activeOrder?.courier?.user?.latitude + " AND  " + activeOrder?.courier?.user?.longitude);
         dispatch(completeOrder(activeOrder.id) as any);
     }
 

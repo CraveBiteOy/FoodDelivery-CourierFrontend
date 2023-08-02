@@ -39,6 +39,12 @@ export default (state = initialState, action: ACTION) => {
         ...state,
         orderItems: action.payload,
       };
+    case "ORDER_ERROR":
+      return {
+        ...state,
+        error: action.payload,
+      };
+
     default:
       return state;
   }

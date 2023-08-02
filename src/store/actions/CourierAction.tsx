@@ -5,31 +5,6 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CourierStatus, NavigationMode } from "../../model/CourierModel";
 
-// Update the location of a courier
-export const updateCourierLocation = (longitude: number, latitude: number) => async (dispatch: Dispatch<ACTION>, getState: any) => {
-    
-  try {
-    const token = await AsyncStorage.getItem("token");
-    const response = await axios.put(
-      `${HOST_URL}/api/courier/authenticated/longitude/${longitude}/latitude/${latitude}`, {}, {
-      headers: { Authorization: token }
-    });
-    dispatch(updateCourierLocationSuccess(response.data));
-  } catch (error) {
-    dispatch(updateCourierLocationFailure(error));
-  }
-};
-
-const updateCourierLocationSuccess = (data: any) => ({
-  type: "UPDATE_COURIER_LOCATION",
-  payload: data,
-});
-
-const updateCourierLocationFailure = (error: unknown) => ({
-  type: "COURIER_ERROR",
-  payload: error,
-});
-
 
 // Update Couirer Status
 export const updateCourierStatus = (status: CourierStatus) => async (dispatch: Dispatch<ACTION>, getState: any) => {
@@ -107,3 +82,28 @@ const getAuthenticatedCourierFailure = (error: unknown) => ({
 });
 
 
+
+// Action for updating the courier longitude and latitude before the order is picked up
+export const updateCourierLocationBeforePickup = (longitude: number, latitude: number) => async (dispatch: Dispatch<ACTION>, getState: any) => {
+
+  try {
+    const token = await AsyncStorage.getItem("token");
+    const response = await axios.put(
+      `${HOST_URL}/api/couriers/courier/authenticated/longitude/${longitude}/latitude/${latitude}`, {}, {
+      headers: { Authorization: token }
+    });
+    dispatch(updateCourierLocationBeforePickupSuccess(response.data));
+  } catch (error) {
+    dispatch(updateCourierLocationBeforePickupFailure(error));
+  }
+}
+
+const updateCourierLocationBeforePickupSuccess = (data: any) => ({
+  type: "UPDATE_COURIER_LOCATION_BEFORE_PICKUP",
+  payload: data,
+});
+
+const updateCourierLocationBeforePickupFailure = (error: unknown) => ({
+  type: "COURIER_ERROR",
+  payload: error,
+});

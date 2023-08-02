@@ -1,9 +1,22 @@
 // Interface for representing a courier
 export interface Courier {
   id: number;
+  user: User;
   status: CourierStatus;
   available: boolean;
   mode: NavigationMode;
+}
+
+// Interface for representing a user
+export interface User {
+  id: number;
+  username: string;
+  firstname: string;
+  surename: string;
+  roles: string[];
+  longitude: number;
+  latitude: number;
+  imageurl: string | null;
 }
 
 // Enum for representing the status of a courier

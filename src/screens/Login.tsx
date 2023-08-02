@@ -24,8 +24,12 @@ const Login = () => {
                 login({
                     username: Username,
                     password: Password,
-                    longitude,
-                    latitude
+                    // longitude,
+                    // latitude
+                    latitude: 65.0128871,
+                    longitude: 25.4666667,
+
+
                 },
                     navigation
                 ) as any

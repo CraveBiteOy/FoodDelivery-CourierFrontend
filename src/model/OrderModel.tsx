@@ -29,17 +29,27 @@ export interface Order {
 // Interface for representing a customer
 export interface Customer {
   id: number;
-  address: string;
-  zipcode: string;
-  city: string;
+  user:User
+}
+
+// Interface for representing a user
+export interface User {
+  id: number;
+  username: string;
+  firstname: string;
+  surename: string;
+  roles: string[];
   longitude: number;
   latitude: number;
+  imageurl: string | null;
 }
+
 // Interface for representing a restaurant
 export interface Restaurant {
   id: number;
   name: string;
   address: string;
+  owner: number
   zipcode: string;
   city: string;
   rating: number;

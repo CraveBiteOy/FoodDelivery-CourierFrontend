@@ -44,7 +44,7 @@ const HamburgerMenu = ({
         <Text style={styles.itemText}>Delivery Vehicle</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.item} onPress={onAboutPress}>
-        <Text style={styles.itemText}>About</Text>
+        <Text style={styles.itemText}>Update Location</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.item} onPress={onLogoutPress}>
         <Text style={styles.itemText}>Logout</Text>

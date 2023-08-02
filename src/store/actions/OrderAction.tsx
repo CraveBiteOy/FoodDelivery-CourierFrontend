@@ -4,6 +4,7 @@ import { HOST_URL } from "../store";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+
 export const acceptOrder = (orderId: number) => async (dispatch: Dispatch<ACTION>, getState: any) => {
   try {
     const token = await AsyncStorage.getItem("token");
@@ -12,8 +13,8 @@ export const acceptOrder = (orderId: number) => async (dispatch: Dispatch<ACTION
     });
     dispatch(acceptOrderSuccess(response.data));
     console.log(response.data);
-    console.log("accepted bt hajri");
-       // update the state of the order
+    console.log("accepted by hajri so the order is: " + response.data.status);
+      // update the state of the order
       dispatch(updateOrder(response.data));
   } catch (error) {
     dispatch(acceptOrderFailure(error));
@@ -34,13 +35,15 @@ const acceptOrderFailure = (error: unknown) => ({
 export const rejectOrder = (orderId: number) => async (dispatch: Dispatch<ACTION>, getState: any) => {
   try {
     const token = await AsyncStorage.getItem("token");
-    const response = await axios.put(`${HOST_URL}/api/order/id/${orderId}/rejectByCourier`, {}, {
+    const response = await axios.put(`${HOST_URL}/api/orders/order/id/${orderId}/rejectByCourier`, {}, {
       headers: { Authorization: token }
     });
+      console.log("reject response : "+ response.data);
       dispatch(rejectOrderSuccess(response.data));
         // update the state of the order
       dispatch(updateOrder(response.data));
   } catch (error) {
+    console.log("reject error : "+ error);
     dispatch(rejectOrderFailure(error));
   }
 };
@@ -59,13 +62,15 @@ const rejectOrderFailure = (error: unknown) => ({
 export const pickUpOrder = (orderId: number) => async (dispatch: Dispatch<ACTION>, getState: any) => {
   try {
     const token = await AsyncStorage.getItem("token");
-    const response = await axios.put(`${HOST_URL}/api/order/id/${orderId}/pickedUp` ,{}, {
+    const response = await axios.put(`${HOST_URL}/api/orders/order/id/${orderId}/pickedUp` ,{}, {
       headers: { Authorization: token }
     });
+     console.log("Hajri picked up so status is : "+ response.data.status);
       dispatch(pickUpOrderSuccess(response.data));
         // update the state of the order
       dispatch(updateOrder(response.data));
   } catch (error) {
+    console.log(error);
     dispatch(pickUpOrderFailure(error));
   }
 };
@@ -84,13 +89,15 @@ const pickUpOrderFailure = (error: unknown) => ({
 export const completeOrder = (orderId: number) => async (dispatch: Dispatch<ACTION>, getState: any) => {
   try {
     const token = await AsyncStorage.getItem("token");
-    const response = await axios.put(`${HOST_URL}/api/order/id/${orderId}/completed`,{}, {
+    const response = await axios.put(`${HOST_URL}/api/orders/order/id/${orderId}/completed`,{}, {
       headers: { Authorization: token }
     });
+      console.log("Hajri completed so status is : "+ response.data.status);
       dispatch(completeOrderSuccess(response.data));
         // update the state of the order
       dispatch(updateOrder(response.data));
   } catch (error) {
+    console.log(error);
     dispatch(completeOrderFailure(error));
   }
 };
@@ -106,34 +113,6 @@ const completeOrderFailure = (error: unknown) => ({
 });
 
  
-/** This function is used to update the location of the courier and the order. 
- * therefore, it is called when the courier accepts an order and completes an order
-**/
-export const updateCourierAndOrderLocation = (orderId: number, latitude: number, longitude: number) => async (dispatch: Dispatch<ACTION>, getState: any) => {
-
-  try {
-    const token = await AsyncStorage.getItem("token");
-    const response = await axios.put(
-      `${HOST_URL}/api/order${orderId}/longitude/${longitude}/latitude/${latitude}`,{}, {
-      headers: { Authorization: token }
-    });
-    dispatch(updateCourierAndOrderLocationSuccess(response.data));
-  } catch (error) {
-    dispatch(updateCourierAndOrderLocationFailure(error));
-  }
-}
-
-const updateCourierAndOrderLocationSuccess = (data: any) => ({
-  type: "UPDATE_COURIER_AND_ORDER_LOCATION",
-  payload: data,
-});
-
-const updateCourierAndOrderLocationFailure = (error: unknown) => ({
-  type: "ORDER_ERROR",
-  payload: error,
-});
-
-
 
 // Action for updating the state of an order
 export const updateOrder = (order: any) => ({
@@ -151,6 +130,7 @@ export const getOrderItemsById = (orderId: number) => async (dispatch: Dispatch<
     });
     dispatch(getOrderItemsByIdSuccess(response.data));
   } catch (error) {
+    console.log(error);
     dispatch(getOrderItemsByIdFailure(error));
   }
 }
@@ -161,6 +141,34 @@ const getOrderItemsByIdSuccess = (data: any) => ({
 });
 
 const getOrderItemsByIdFailure = (error: unknown) => ({
+  type: "ORDER_ERROR",
+  payload: error,
+});
+
+// Action for updating the order longitude and latitude after the order is picked up
+export const updateCourierAndOrderLocationAfterPickup = (orderId: number, longitude: number, latitude: number) => async (dispatch: Dispatch<ACTION>, getState: any) => {
+
+  try {
+    const token = await AsyncStorage.getItem("token");
+    const response = await axios.put(
+      `${HOST_URL}/api/orders/order/id/${orderId}/longitude/${longitude}/latitude/${latitude}`, {}, {
+      headers: { Authorization: token }
+    });
+    console.log("current status is " + response.data.status);
+    dispatch(updateCourierAndOrderLocationAfterPickupSuccess(response.data));
+    dispatch(updateOrder(response.data));
+  } catch (error) {
+    console.log("error is " + error);
+    dispatch(updateCourierAndOrderLocationAfterPickupFailure(error));
+  }
+}
+
+const updateCourierAndOrderLocationAfterPickupSuccess = (data: any) => ({
+  type: "UPDATE_COURIER_AND_ORDER_LOCATION",
+  payload: data,
+});
+
+const updateCourierAndOrderLocationAfterPickupFailure = (error: unknown) => ({
   type: "ORDER_ERROR",
   payload: error,
 });
