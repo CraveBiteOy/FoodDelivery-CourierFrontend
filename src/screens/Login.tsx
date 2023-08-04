@@ -4,10 +4,9 @@ import AuthForm from '../components/AuthForm';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useDispatch } from 'react-redux';
-import { login, registerAsCourier } from '../store/actions/UserAction';
+import { login } from '../store/actions/UserAction';
 import { RootStackParamList } from '../navigators/MyStack';
 import { getLocation } from '../utils/location';
-
 
 const Login = () => {
 
@@ -24,19 +23,20 @@ const Login = () => {
                 login({
                     username: Username,
                     password: Password,
-                    // longitude,
-                    // latitude
-                    latitude: 65.0128871,
-                    longitude: 25.4666667,
+                    longitude,
+                    latitude
+                    // latitude: 65.0128871,
+                    // longitude: 25.4666667,
 
 
                 },
                     navigation
                 ) as any
             );
-            dispatch(registerAsCourier() as any);
+
+
         } else {
-            console.log('error');
+            console.log('error getting location');
         }
     };
 

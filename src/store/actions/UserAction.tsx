@@ -8,31 +8,32 @@ import { RootStackParamList } from "../../navigators/MyStack";
 
 
 export const login = (loginForm: LoginForm, navigation: NativeStackNavigationProp<RootStackParamList>) => async (dispatch: Dispatch<ACTION>, getState: any) => {
-    const { username, password, longitude, latitude } = loginForm;
-    try {
-      const response = await axios.put(`${HOST_URL}/api/users/signIn`, {
-        username,
-        password,
-        longitude,
-        latitude,
-      });
-      const token = response.headers.authorization || "";
-      await AsyncStorage.setItem("token", token);
-      navigation.navigate('Home');
-      console.log(response.data)
-      dispatch(loginSuccess(response.data));
-    } catch (error) {
-      dispatch(loginFailure(error));
-      console.log(error)
-    }
-  };
+  const { username, password, longitude, latitude } = loginForm;
+  try {
+    const response = await axios.put(`${HOST_URL}/api/users/signIn`, {
+      username,
+      password,
+      longitude,
+      latitude,
+    });
+    const token = response.headers.authorization || "";
+    await AsyncStorage.setItem("token", token);
+    navigation.navigate('Home');
+    console.log(response.data)
+    dispatch(loginSuccess(response.data));
+  } catch (error: any) {
+    dispatch(loginFailure(error?.response?.data?.messages.toString()));
+    // console.log(error)
+    console.log(error.response.data.messages.toString())
+  }
+}
 
 const loginSuccess = (data: any) => ({
   type: "LOG_IN",
   payload: data,
 });
 
-const loginFailure = (error: unknown) => ({
+const loginFailure = (error: any) => ({
   type: "USER_ERROR",
   payload: error,
 });
@@ -49,8 +50,8 @@ export const register = (registerForm: UserRegisterForm,  navigation: NativeStac
       navigation.navigate('Login');
       console.log(token)
       dispatch(registerSuccess(response.data));
-    } catch (error) {
-      dispatch(registerFailure(error));
+    } catch (error: any) {
+      dispatch(registerFailure(error?.response?.data?.messages.toString() || 'An unknown error occurred'));
     }
   };
 
@@ -75,8 +76,8 @@ const registerFailure = (error: unknown) => ({
         });
         dispatch(getAuthUserSuccess(response.data));
       }
-    } catch (error) {
-      dispatch(getAuthUserFailure());
+    } catch (error: any) {
+      dispatch(getAuthUserFailure(error?.response?.data?.messages.toString() || 'An unknown error occurred'));
     }
   };
 
@@ -85,9 +86,9 @@ const getAuthUserSuccess = (data: any) => ({
   payload: data,
 });
 
-const getAuthUserFailure = () => ({
+const getAuthUserFailure = (error : any) => ({
   type: "USER_ERROR",
-  payload: "loading authenticated user failed",
+  payload: error,
 });
 
 const userError = (message: string) => ({
@@ -99,8 +100,8 @@ export const logout = () => async (dispatch: Dispatch<ACTION>, getState: any) =>
     try {
       await AsyncStorage.removeItem("token");
       dispatch(logoutSuccess());
-    } catch (error) {
-      dispatch(logoutFailure());
+  } catch (error: any) {
+      dispatch(logoutFailure(error?.response?.data?.messages.toString() || 'An unknown error occurred'));
     }
 }
 
@@ -108,30 +109,9 @@ const logoutSuccess = () => ({
   type: "LOG_OUT",
 });
 
-const logoutFailure = () => ({
+const logoutFailure = (error : any) => ({
   type: "USER_ERROR",
-  payload: "logout failed",
-});
-
-export const registerAsCourier = () => async (dispatch: Dispatch<ACTION>, getState: any) => {
-    try {
-      const response = await axios.get('/api/couriers/courier/authenticated');
-      const courier = response.data;
-      console.log("courier "+ courier)
-      dispatch(registerAsCourierSuccess(courier));
-    } catch (error) {
-      dispatch(registerAsCourierFailure(error));
-    
-    }
-};
-
-const registerAsCourierSuccess = (data: any) => ({
-  type: "REGISTER_AS_COURIER_SUCCESS",
-  payload: data,
-});
-
-const registerAsCourierFailure = (error: unknown) => ({
-  type: "REGISTER_AS_COURIER_FAILURE",
   payload: error,
 });
+
 

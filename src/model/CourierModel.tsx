@@ -31,21 +31,13 @@ export enum NavigationMode {
   CAR = "CAR",
 }
 
-export enum OrderStatus {
-  SENT_TO_COUIER = "COOKING",
-  READY = "READY_FOR_PICKUP",
-  ACCEPTED = "COURIER_ACCEPTED",
-  REJECTED = "COURIER_REJECTED",
-  PICKED_UP = "PICKED_UP",
-  COMPLETED = "COMPLETED",
-}
-
-
 
 // Interface for representing the state of the application
 export interface CourierState {
   courier: Courier | {};
-  message: string | null;
+  CourierErrorMessage: string | null;
+  isNewCourier: boolean;
+  isCourierError: boolean;
 }
 
 // Interface for representing an action

@@ -17,7 +17,7 @@ const PickUpView = () => {
 
     const PickUpOrder = () => {
         console.log("Picked up");
-        console.log("order items are : " +orderItems);
+        console.log(activeOrder?.status);
         if (activeOrder && activeOrder.status === OrderStatus.READY) {
             dispatch(pickUpOrder(activeOrder.id) as any);
         }

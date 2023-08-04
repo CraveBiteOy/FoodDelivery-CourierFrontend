@@ -11,18 +11,23 @@ import { RootStackParamList } from '../navigators/MyStack';
 import { logoutUtil } from '../utils/logout';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
-import { OrderStatus } from '../model/CourierModel';
+import { OrderStatus } from '../model/OrderModel';
+import ErrorModal from '../components/ErrorModal';
+import { restOrderError } from '../store/actions/OrderAction';
 
 const Home = () => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-  const { activeOrder } = useSelector((state: RootState) => state.ORDERS);
- 
+  const { activeOrder, isOrderError, OrderErrorMessage } = useSelector((state: RootState) => state.ORDERS);
+  const {isCourierError, CourierErrorMessage} = useSelector((state: RootState) => state.COURIERS);
   const dispatch = useDispatch();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const [currentSnapPoint, setCurrentSnapPoint] = useState(0);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [isErrorVisible, setIsErrorVisible] = useState(false);
   
   const snapPoints = [100, 400, 600];
+
 
   const toggleMenu = () => {
     setIsMenuVisible((prevState) => !prevState);
@@ -51,7 +56,7 @@ const Home = () => {
   const handleOrderStageChange = (orderStatus: OrderStatus) => {
     if (orderStatus === OrderStatus.SENT_TO_COUIER) {
       setCurrentSnapPoint(1);
-    } else if (orderStatus === OrderStatus.ACCEPTED || orderStatus === OrderStatus.PICKED_UP) {
+    } else if (orderStatus === OrderStatus.ACCEPTED || orderStatus === OrderStatus.PICKED_UP || orderStatus === OrderStatus.READY) {
       setCurrentSnapPoint(2);
     } else {
       setCurrentSnapPoint(0);
@@ -65,9 +70,27 @@ const Home = () => {
      bottomSheetModalRef.current?.present();
   }, [activeOrder]);
 
+
+  useEffect(() => {
+    if(isOrderError || isCourierError) {
+      setErrorMsg(OrderErrorMessage || CourierErrorMessage);
+      setIsErrorVisible(true);
+    }
+
+    console.log('isErrorVisible: ', isErrorVisible);
+    console.log('isOrderError: ', isOrderError);
+    console.log('errorMsg: ', errorMsg);
+  }, [isOrderError, isCourierError]);
+
+
   return (
     <BottomSheetModalProvider>
       <View style={{ flex: 1 }}>
+        {isErrorVisible &&
+          <> 
+            <ErrorModal message={errorMsg} />
+          </>
+        }
         <Header onMenuPress={toggleMenu} />
         <Map />
         {isMenuVisible && (

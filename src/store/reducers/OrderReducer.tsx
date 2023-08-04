@@ -3,8 +3,9 @@ import { OrderState } from "../../model/OrderModel";
 
 const initialState: OrderState = {
   activeOrder: {},
-  message: null,
+  OrderErrorMessage: null,
   orderItems: [],
+  isOrderError: false,
 };
 
 export default (state = initialState, action: ACTION) => {
@@ -42,7 +43,15 @@ export default (state = initialState, action: ACTION) => {
     case "ORDER_ERROR":
       return {
         ...state,
-        error: action.payload,
+        OrderErrorMessage: action.payload,
+        isOrderError: true,
+      };
+    //TEST
+    case "REST_ORDER_ERROR":
+      return {
+        ...state,
+        OrderErrorMessage: null,
+        isOrderError: false,
       };
 
     default:

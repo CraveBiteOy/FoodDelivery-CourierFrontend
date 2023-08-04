@@ -7,7 +7,6 @@ import { RootStackParamList } from '../navigators/MyStack';
 import { RootState } from '../store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { register } from '../store/actions/UserAction';
-import { Text } from 'react-native';
 import { getLocation } from '../utils/location';
 
 
@@ -57,8 +56,7 @@ const Signup = () => {
     ]
 
     return (
-    <>
-         {authState.authError && <Text>{authState.message}</Text>}
+  
         <AuthForm
             onSubmit={handleSignup}
             buttonText="Sign up"
@@ -67,7 +65,6 @@ const Signup = () => {
             onPromptActionPress={handleLoginPrompt}
             fields={signupFields}
             />
-    </>
     )
 
 }

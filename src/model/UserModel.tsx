@@ -12,14 +12,12 @@ export interface USER {
 
 export interface declaredStateUser  {
     authUser: USER | {},
-    userUpdateStatus: boolean,
+    // userUpdateStatus: boolean,
     userUpdated: USER | {},
-    message: string | null,
+    errorMessage: string | null,
     authSuccess: boolean,
     authError: boolean
     courier: any;
-    registerAsCourierSuccess: boolean;
-    registerAsCourierError: boolean;
     
 }
 

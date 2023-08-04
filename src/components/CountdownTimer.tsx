@@ -37,7 +37,7 @@ const CountdownTimer = ({ duration, onComplete, timeFormat = 'seconds' }: Countd
         colors={['#004777', '#F7B801', '#A30000', '#A30000']}
         colorsTime={[20, 15, 10, 0]}
         onComplete={handleComplete}
-        size={55}
+        size={50}
         strokeWidth={4}
       >
         {({ remainingTime }) => {
@@ -58,12 +58,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   time: {
-    fontSize: 15,
+    fontSize: 13,
     fontWeight: 'bold',
     color: "black",
   },
   label: {
-    fontSize: 15,
+    fontSize: 13,
     fontWeight: 'bold',
     color: "black"
   },

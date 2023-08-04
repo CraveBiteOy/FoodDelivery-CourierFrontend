@@ -40,7 +40,7 @@ const NotificationView = ({ onComplete }: NotificationViewProps) => {
             <View style={styles.first_row}>
                 <Text style={styles.text}>New Order!</Text>
                 <View style={styles.circle}>
-                    <CountdownTimer duration={20} onComplete={handleComplete} timeFormat='seconds' />
+                    <CountdownTimer duration={200} onComplete={handleComplete} timeFormat='seconds' />
                 </View>
             </View>
             <View style={styles.second_row}>

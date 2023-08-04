@@ -3,14 +3,12 @@ import { ACTION, declaredStateUser } from "../../model/UserModel"
 
 let initialState = {
     authUser: {},
-    userUpdateStatus: false,
+    // userUpdateStatus: false,
     userUpdated: {},
-    message: null,
+    errorMessage: null,
     authSuccess: false,
     authError: false,
     courier: {},
-    registerAsCourierSuccess: false,
-    registerAsCourierError: false,
 }
 
 export default (state: declaredStateUser = initialState, action: ACTION) => {
@@ -42,24 +40,12 @@ export default (state: declaredStateUser = initialState, action: ACTION) => {
                 otherUser: {},
                 userSuccess: true
             }
-        case "AUTH_ERROR":
+        case "USER_ERROR":
             return {
                 ...state,
-                message: action.payload,
+                errorMessage: action.payload,
                 authError: true
             }
-         case "REGISTER_AS_COURIER_SUCCESS":
-            return {
-                ...state,
-                courier: action.payload,
-                registerAsCourierSuccess: true
-            };
-        case "REGISTER_AS_COURIER_FAILURE":
-            return {
-                ...state,
-                message: action.payload,
-                registerAsCourierError: true
-            };
         default:
             return state
     }

@@ -3,7 +3,9 @@ import { CourierState} from "../../model/CourierModel";
 
 const initialState: CourierState = {
     courier: {},
-    message: null,
+    CourierErrorMessage: null,
+    isNewCourier: false,
+    isCourierError: false
 };
 
 
@@ -27,9 +29,21 @@ export default (state = initialState, action: ACTION) => {
     case "COURIER_ERROR":
       return {
         ...state,
-        message: action.payload,
+        CourierErrorMessage: action.payload,
+        isCourierError: true,
       };
     case "UPDATE_COURIER_LOCATION_BEFORE_PICKUP":
+      return {
+        ...state,
+        courier: action.payload,
+      };
+    case "CHECK_IS_NEW_COURIER":
+      return {
+        ...state,
+        isNewCourier: action.payload,
+      
+      };
+    case "UPDATE_COURIER_FROM_WEBSOCKET":
       return {
         ...state,
         courier: action.payload,

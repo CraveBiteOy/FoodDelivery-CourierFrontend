@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import { validateConfirmPassword, validateEmail, validateName, validatePassword, validateRequired } from '../utils/validation';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
+
 
 export type AuthFormProps = {
  onSubmit: (values: Record<string, string>) => void;
@@ -23,6 +26,8 @@ const AuthForm = ({
 
  const [values, setValues] = useState<Record<string, string>>({});
  const [errors, setErrors] = useState<Record<string, string>>({});
+ 
+  const { errorMessage, authError } = useSelector((state: RootState) => state.USERS);
 
 
   //handles the form submission
@@ -100,6 +105,12 @@ const AuthForm = ({
             {errors[field.fieldName] && <Text style={styles.error}>{errors[field.fieldName]}</Text>}
           </View>
         ))}
+        
+        {authError ?
+          <>
+            <Text style={styles.error}>{errorMessage}</Text>
+          </>
+          : null}
         <TouchableOpacity onPress={handleFormSubmit} style={styles.button}>
           <Text style={styles.buttonText}>{buttonText}</Text>
         </TouchableOpacity>

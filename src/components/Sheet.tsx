@@ -3,7 +3,7 @@ import DefaultView from '../views/bottomsheet/DefaultView';
 import NotificationView from '../views/bottomsheet/NotificationView';
 import PickUpView from '../views/bottomsheet/PickUpView';
 import DropOffView from '../views/bottomsheet/DropOffView';
-import { OrderStatus } from '../model/CourierModel';
+import { OrderStatus } from '../model/OrderModel';
 // import { Order } from '../model/OrderModel';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthenticatedCourier } from '../store/actions/CourierAction';
@@ -42,12 +42,12 @@ const Sheet = ({ orderStatus }: sheetProps) => {
 
   let content;
   if (!activeOrder) {
-    content = <DefaultView />;
+    content = <DefaultView/>;
   }
   else {
     switch (orderStatus) {
       case OrderStatus.SENT_TO_COUIER:
-        content = <NotificationView onComplete={handleComplete} />;
+        content = <NotificationView onComplete={handleComplete}/>;
         break;
       case OrderStatus.ACCEPTED:
         content = <PickUpView />;

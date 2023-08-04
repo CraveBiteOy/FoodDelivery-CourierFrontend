@@ -1,18 +1,21 @@
 import React, { useCallback, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { getAuthenticatedCourier, updateCourierStatus } from '../../store/actions/CourierAction';
+import { checkIsNewCourier, getAuthenticatedCourier, updateCourierStatus } from '../../store/actions/CourierAction';
 import { useDispatch, useSelector } from 'react-redux';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../navigators/MyStack';
+import { useNavigation } from '@react-navigation/native';
 import { useEffect } from 'react';
 import { RootState } from '../../store/store';
 import { closeSocket, setupSocket } from '../../utils/setupSocket';
 import { CourierStatus } from '../../model/CourierModel';
-import { getOrderItemsById } from '../../store/actions/OrderAction';
 
 const DefaultView = () => {
   const [isOnline, setIsOnline] = useState(false);
   const dispatch = useDispatch();
-  const { courier } = useSelector((state: RootState) => state.COURIERS);
-  const { activeOrder, orderItems } = useSelector((state: RootState) => state.ORDERS);
+  const { courier, isCourierError } = useSelector((state: RootState) => state.COURIERS);
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
 
   //function to load the authenticated courier
   const loadAuthCourier = useCallback(async () => {
@@ -22,6 +25,15 @@ const DefaultView = () => {
   useEffect(() => {
     loadAuthCourier();
   }, []);
+  
+  //check if the courier is new to the system or not
+  useEffect(() => {
+    if (isCourierError) {
+        console.log(isCourierError);
+        navigation.navigate('Transportation');
+      }
+  }
+  , []);
 
   const handleOnPress = async () => {
      if (courier !== null) {

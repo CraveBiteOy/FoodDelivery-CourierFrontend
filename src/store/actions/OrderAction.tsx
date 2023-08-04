@@ -16,8 +16,8 @@ export const acceptOrder = (orderId: number) => async (dispatch: Dispatch<ACTION
     console.log("accepted by hajri so the order is: " + response.data.status);
       // update the state of the order
       dispatch(updateOrder(response.data));
-  } catch (error) {
-    dispatch(acceptOrderFailure(error));
+  } catch (error : any) {
+    dispatch(acceptOrderFailure(error?.response?.data?.messages.toString() || 'An unknown error occurred'));
   }
 };
 
@@ -42,9 +42,9 @@ export const rejectOrder = (orderId: number) => async (dispatch: Dispatch<ACTION
       dispatch(rejectOrderSuccess(response.data));
         // update the state of the order
       dispatch(updateOrder(response.data));
-  } catch (error) {
+  } catch (error : any) {
     console.log("reject error : "+ error);
-    dispatch(rejectOrderFailure(error));
+    dispatch(rejectOrderFailure(error?.response?.data?.messages.toString() || 'An unknown error occurred'));
   }
 };
 
@@ -69,9 +69,9 @@ export const pickUpOrder = (orderId: number) => async (dispatch: Dispatch<ACTION
       dispatch(pickUpOrderSuccess(response.data));
         // update the state of the order
       dispatch(updateOrder(response.data));
-  } catch (error) {
-    console.log(error);
-    dispatch(pickUpOrderFailure(error));
+  } catch (error : any) {
+    console.log(error?.response?.data?.messages.toString());
+    dispatch(pickUpOrderFailure(error?.response?.data?.messages.toString() || 'An unknown error occurred'));
   }
 };
 
@@ -96,9 +96,9 @@ export const completeOrder = (orderId: number) => async (dispatch: Dispatch<ACTI
       dispatch(completeOrderSuccess(response.data));
         // update the state of the order
       dispatch(updateOrder(response.data));
-  } catch (error) {
-    console.log(error);
-    dispatch(completeOrderFailure(error));
+  } catch (error : any) {
+    console.log(error?.response?.data?.messages.toString());
+    dispatch(completeOrderFailure(error?.response?.data?.messages.toString() || 'An unknown error occurred'));
   }
 };
 
@@ -129,9 +129,9 @@ export const getOrderItemsById = (orderId: number) => async (dispatch: Dispatch<
       headers: { Authorization: token }
     });
     dispatch(getOrderItemsByIdSuccess(response.data));
-  } catch (error) {
+  } catch (error : any) {
     console.log(error);
-    dispatch(getOrderItemsByIdFailure(error));
+    dispatch(getOrderItemsByIdFailure(error?.response?.data?.messages.toString() || 'An unknown error occurred'));
   }
 }
 
@@ -157,9 +157,9 @@ export const updateCourierAndOrderLocationAfterPickup = (orderId: number, longit
     console.log("current status is " + response.data.status);
     dispatch(updateCourierAndOrderLocationAfterPickupSuccess(response.data));
     dispatch(updateOrder(response.data));
-  } catch (error) {
-    console.log("error is " + error);
-    dispatch(updateCourierAndOrderLocationAfterPickupFailure(error));
+  } catch (error : any) {
+    console.log("error is " + error?.response?.data?.messages.toString());
+    dispatch(updateCourierAndOrderLocationAfterPickupFailure(error?.response?.data?.messages.toString() || 'An unknown error occurred'));
   }
 }
 
@@ -171,4 +171,13 @@ const updateCourierAndOrderLocationAfterPickupSuccess = (data: any) => ({
 const updateCourierAndOrderLocationAfterPickupFailure = (error: unknown) => ({
   type: "ORDER_ERROR",
   payload: error,
+});
+
+
+//TEST
+
+// rest order error 
+export const restOrderError = (data : any) => ({
+  type: "REST_ORDER_ERROR",
+  payload: data,
 });

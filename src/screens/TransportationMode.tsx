@@ -1,118 +1,80 @@
 
 import React, { useState } from 'react';
-import { LayoutAnimation, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-
-type AccordionProps = {
-  title: React.ReactNode;
-  children: React.ReactNode;
-  isOpen: boolean;
-  toggleOpen: () => void;
-};
-
-const Accordion = ({ title, children, isOpen, toggleOpen }: AccordionProps) => {
-  return (
-    <>
-      <TouchableOpacity onPress={toggleOpen} activeOpacity={0.6} style={styles.header}>
-        <Text style={styles.headerText}>{title}</Text>
-      </TouchableOpacity>
-      <View style={[styles.list, !isOpen ? styles.hidden : undefined]}>
-        {children}
-      </View>
-    </>
-  );
-};
-
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { updateCourierMode } from '../store/actions/CourierAction';
+import { NavigationMode } from '../model/CourierModel';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../navigators/MyStack';
 
 
 const TransportationMode = () => {
-  const [selectedMode, setSelectedMode] = useState<string | null>(null);
-  const [isOpen, setIsOpen] = useState(true);
+  const [selectedMode, setSelectedMode] = useState<NavigationMode | null>(null);
+  const dispatch = useDispatch();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
-  const handleSelectMode = (mode: string) => {
+  const handleSelectMode = (mode: NavigationMode) => {
     setSelectedMode(mode);
-    setIsOpen(false);
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-  };
-
-  const toggleOpen = () => {
-    setIsOpen(value => !value);
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    dispatch(updateCourierMode(mode) as any);
+    navigation.navigate('Home');
   };
 
   return (
-    <View>
-      <Accordion title="Select Transportation Mode" isOpen={isOpen} toggleOpen={toggleOpen}>
-        <TouchableOpacity onPress={() => handleSelectMode('Bicycle')}>
-          <Text style={[styles.option, selectedMode === 'Bicycle' ? styles.selectedOption : undefined]}>
-            Bicycle
-          </Text>
+    <View style={styles.container}>
+      <Text style={styles.header}>Choose Transportation Mode</Text>
+      <View style={styles.optionsContainer}>
+        <TouchableOpacity
+          style={[
+            styles.option,
+            selectedMode === NavigationMode.BICYCLE ? styles.selectedOption : undefined,
+          ]}
+          onPress={() => handleSelectMode(NavigationMode.BICYCLE)}
+        >
+          <Text style={styles.optionText}>Bicycle</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleSelectMode('Car')}>
-          <Text style={[styles.option, selectedMode === 'Car' ? styles.selectedOption : undefined]}>
-            Car
-          </Text>
+        <TouchableOpacity
+          style={[
+            styles.option,
+            selectedMode === NavigationMode.CAR ? styles.selectedOption : undefined,
+          ]}
+          onPress={() => handleSelectMode(NavigationMode.CAR)}
+        >
+          <Text style={styles.optionText}>Car</Text>
         </TouchableOpacity>
-      </Accordion>
-      {selectedMode && (
-        <View style={styles.selectedContainer}>
-          <Text style={styles.selectedHeader}>Selected:</Text>
-          <Text style={styles.selectedText}>{selectedMode}</Text>
-        </View>
-      )}
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  header: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 10,
-    marginVertical: 10,
+  container: {
     alignItems: 'center',
   },
-  headerText: {
-    textAlign: 'center',
+  header: {
+    fontSize: 20,
     fontWeight: 'bold',
+    textAlign: 'center',
+    marginVertical: 20,
   },
-  hidden: {
-    height: 0,
-  },
-  list: {
-    overflow: 'hidden',
-    backgroundColor: '#f0f0f0',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-    marginVertical: 10,
+  optionsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   option: {
+    backgroundColor: '#fafafa',
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: 10,
-    marginVertical: 5,
-    backgroundColor: '#ffffff',
+    borderRadius: 20,
+    marginHorizontal: 10,
+  },
+  optionText: {
+    fontSize: 16,
+    fontWeight: 'bold',
     textAlign: 'center',
   },
   selectedOption: {
     backgroundColor: '#f7691a',
-    color: '#ffffff',
-  },
-  selectedContainer: {
-    marginTop: 20,
-    alignItems: 'center',
-  },
-  selectedHeader: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  selectedText: {
-    marginTop: 10,
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
   },
 });
 

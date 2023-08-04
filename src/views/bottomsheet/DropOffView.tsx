@@ -12,11 +12,16 @@ import { completeOrder } from '../../store/actions/OrderAction';
 const DropOffView = () => {
 
     const { activeOrder } = useSelector((state: RootState) => state.ORDERS);
+    const {courier} = useSelector((state: RootState) => state.COURIERS);
     const dispatch = useDispatch();
 
     const DropOffOrder = () => {
         console.log("Dropped off");
-        console.log(activeOrder?.courier?.user?.latitude + " AND  " + activeOrder?.courier?.user?.longitude);
+        console.log("courier object " + JSON.stringify(activeOrder?.courier) );
+        console.log("location of couier from order res " + activeOrder?.courier?.user?.latitude + " AND  " + activeOrder?.courier?.user?.longitude);
+        console.log("location of couier from courier res " + courier?.user?.latitude + " AND  " + courier?.user?.longitude)
+        console.log(courier)
+
         dispatch(completeOrder(activeOrder.id) as any);
     }
 

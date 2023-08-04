@@ -24,7 +24,7 @@ const UpdateLocation = () => {
     const handleSubmit = () => {
         if (orderStatus === OrderStatus.ACCEPTED) {
             dispatch(updateCourierLocationBeforePickup( Number(longitude), Number(latitude)) as any);
-        } else if (orderStatus === OrderStatus.PICKED_UP) {
+        } else if (orderStatus === OrderStatus.PICKED_UP || orderStatus === OrderStatus.READY) {
             console.log("location form submitted!");
             dispatch(updateCourierAndOrderLocationAfterPickup(orderId, Number(longitude), Number(latitude)) as any);
         }
