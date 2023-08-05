@@ -4,15 +4,19 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { DataTable } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
+import { useDispatch } from 'react-redux';
 import { completeOrder } from '../../store/actions/OrderAction';
+import { Courier } from '../../model/CourierModel';
+import { Order } from '../../model/OrderModel';
+
+type DropOffViewProps = {
+    activeOrder: Order;
+    courier: Courier;
+};
 
 
-const DropOffView = () => {
+const DropOffView = ({ activeOrder, courier }: DropOffViewProps) => {
 
-    const { activeOrder } = useSelector((state: RootState) => state.ORDERS);
-    const {courier} = useSelector((state: RootState) => state.COURIERS);
     const dispatch = useDispatch();
 
     const DropOffOrder = () => {
@@ -29,15 +33,13 @@ const DropOffView = () => {
         <View style={styles.container}>
             <View style={styles.tite_container}>
                 <Text style={styles.main_title}>Drop off to</Text>
-                {/* <Text style={styles.location_title}>location address</Text> */}
-                <Text style={styles.location_title}>{activeOrder?.customer?.user?.firstName}</Text>
+                <Text style={styles.location_title}>{activeOrder?.customer?.user?.firstname}</Text>
             </View>
             <View>
                 <Text style={styles.sub_header}>Address details</Text>
                 <View style={styles.address}>
                      <Icon name="map-marker" size={24} color="black" />
                     <View style={styles.b_container}>
-                        {/* <Text style={styles.mini_header}>address</Text> */}
                         <Text style={styles.mini_header}>{activeOrder?.address}</Text>
                     </View>
                 </View>
@@ -66,9 +68,6 @@ const DropOffView = () => {
                     <Icon name="info-circle" size={24} color="black" />
                     <View style={styles.b_container}>
                         <Text style={styles.mini_header}>note</Text>
-                        {/* <Text>please leave the order next to the gate! 
-                              call me if you the door code does not work.
-                        </Text> */}
                         <Text>{activeOrder?.note}</Text>
                     </View>
                 </View>

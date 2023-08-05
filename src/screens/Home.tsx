@@ -13,13 +13,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import { OrderStatus } from '../model/OrderModel';
 import ErrorModal from '../components/ErrorModal';
-import { restOrderError } from '../store/actions/OrderAction';
+
 
 const Home = () => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-  const { activeOrder, isOrderError, OrderErrorMessage } = useSelector((state: RootState) => state.ORDERS);
-  const {isCourierError, CourierErrorMessage} = useSelector((state: RootState) => state.COURIERS);
+  const { activeOrder, orderItems, isOrderError, OrderErrorMessage } = useSelector((state: RootState) => state.ORDERS);
+  const {courier, isCourierError, CourierErrorMessage} = useSelector((state: RootState) => state.COURIERS);
   const dispatch = useDispatch();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const [currentSnapPoint, setCurrentSnapPoint] = useState(0);
@@ -92,7 +92,10 @@ const Home = () => {
           </>
         }
         <Header onMenuPress={toggleMenu} />
-        <Map />
+        <Map
+          activeOrder={activeOrder}
+          courier={courier}
+        />
         {isMenuVisible && (
           <TouchableOpacity
             activeOpacity={1}
@@ -114,8 +117,12 @@ const Home = () => {
           index={currentSnapPoint}
           enablePanDownToClose={false}
         >
-            <Sheet
-              orderStatus={activeOrder?.status}
+          <Sheet
+            activeOrder={activeOrder}
+            courier={courier}
+            orderStatus={activeOrder?.status}
+            orderItems={orderItems}
+            isCourierError={isCourierError}
               />
         </BottomSheetModal>
       </View>

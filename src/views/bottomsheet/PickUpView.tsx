@@ -3,15 +3,18 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import {Checkbox, DataTable} from 'react-native-paper';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
+import { useDispatch } from 'react-redux';
 import { pickUpOrder } from '../../store/actions/OrderAction';
-import { OrderItem } from '../../model/OrderModel';
+import { Order, OrderItem } from '../../model/OrderModel';
 import { OrderStatus } from '../../model/OrderModel';
 
+type PickUpViewProps = {
+    activeOrder: Order;
+    orderItems: OrderItem[] | []
+}
 
-const PickUpView = () => {
-    const { activeOrder, orderItems } = useSelector((state: RootState) => state.ORDERS);
+const PickUpView = ({ activeOrder, orderItems }: PickUpViewProps) => {
+
     const dispatch = useDispatch();
     const [checkedItems, setCheckedItems] = useState<Record<number, boolean>>({});
 
@@ -41,9 +44,7 @@ const PickUpView = () => {
         <View>
             <View style={styles.restaurant_info}>
                 <Text style={styles.header}>Restaurant</Text>
-                {/* <Text style={styles.value}>Restaurant Name</Text> */}
                 <Text style={styles.value}>{activeOrder?.restaurant?.name}</Text>
-                {/* <Text style={styles.value}>Restaurant Address</Text> */}
                 <Text style={styles.restaurant_address}>{activeOrder?.restaurant?.address}</Text>
             </View>
             <View style={styles.customer_container}>
@@ -51,14 +52,12 @@ const PickUpView = () => {
                 <View style={styles.customer_details}>
                     <View style={styles.customer_n}>
                         <Text style={styles.customer_header}>Name</Text>
-                        {/* <Text style={styles.value}>Hajri</Text> */}
                         <Text style={styles.value}>{activeOrder?.customer?.user?.firstname}</Text>
                     </View>
                     <View style={styles.line}>
                     </View>
                     <View style={styles.customer_n}>
                         <Text style={styles.customer_header}>Order No.</Text>
-                        {/* <Text style={styles.value}>#122</Text> */}
                         <Text style={styles.value}>#{activeOrder?.id}</Text>
                     </View>
                 </View>
@@ -86,7 +85,6 @@ const PickUpView = () => {
                 </DataTable>
             </View>
             <View style={styles.button_box}>
-                {/* <TouchableOpacity style={styles.button} onPress={PickUpOrder}> */}
                 <TouchableOpacity
                     style={styles.button}
                     onPress={PickUpOrder}

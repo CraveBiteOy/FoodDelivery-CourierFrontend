@@ -94,6 +94,7 @@ export const updateCourierLocationBeforePickup = (longitude: number, latitude: n
     });
     dispatch(updateCourierLocationBeforePickupSuccess(response.data));
   } catch (error : any) {
+    console.log(error.response.data.messages.toString())
     dispatch(updateCourierLocationBeforePickupFailure(error?.response?.data?.messages.toString() || 'An unknown error occurred'));
   }
 }

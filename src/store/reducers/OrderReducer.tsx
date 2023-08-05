@@ -35,6 +35,11 @@ export default (state = initialState, action: ACTION) => {
               ...state,
                 activeOrder: action.payload,
       };
+    case "REMOVE_ORDER":
+      return {
+        ...state,
+        activeOrder: {},
+      };
     case "GET_ORDER_ITEMS_BY_ID":
       return {
         ...state,

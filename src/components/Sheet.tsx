@@ -3,22 +3,24 @@ import DefaultView from '../views/bottomsheet/DefaultView';
 import NotificationView from '../views/bottomsheet/NotificationView';
 import PickUpView from '../views/bottomsheet/PickUpView';
 import DropOffView from '../views/bottomsheet/DropOffView';
-import { OrderStatus } from '../model/OrderModel';
-// import { Order } from '../model/OrderModel';
-import { useDispatch, useSelector } from 'react-redux';
+import { Order, OrderItem, OrderStatus } from '../model/OrderModel';
+import { useDispatch } from 'react-redux';
 import { getAuthenticatedCourier } from '../store/actions/CourierAction';
-import { RootState } from '../store/store';
 import { rejectOrder } from '../store/actions/OrderAction';
+import { Courier } from '../model/CourierModel';
 
-export type sheetProps = {
+export type SheetProps = {
+  activeOrder: Order;
+  courier: Courier;
   orderStatus: OrderStatus;
+  orderItems: OrderItem[] | [];
+  isCourierError: boolean;
 };
 
-const Sheet = ({ orderStatus }: sheetProps) => {
+const Sheet = ({ activeOrder, courier, orderStatus, orderItems, isCourierError }: SheetProps) => {
   
   
   const dispatch = useDispatch();
-  const { activeOrder } = useSelector((state: RootState) => state.ORDERS);
 
 
   //function to load the authenticated courier
@@ -42,24 +44,24 @@ const Sheet = ({ orderStatus }: sheetProps) => {
 
   let content;
   if (!activeOrder) {
-    content = <DefaultView/>;
+    content = <DefaultView isCourierError={isCourierError} courier={courier}/>;
   }
   else {
     switch (orderStatus) {
       case OrderStatus.SENT_TO_COUIER:
-        content = <NotificationView onComplete={handleComplete}/>;
+        content = <NotificationView activeOrder={activeOrder} onComplete={handleComplete}/>;
         break;
       case OrderStatus.ACCEPTED:
-        content = <PickUpView />;
+        content = <PickUpView activeOrder={activeOrder} orderItems={orderItems} />;
         break;
       case OrderStatus.READY:
-        content = <PickUpView />;
+        content = <PickUpView activeOrder={activeOrder} orderItems={orderItems} />;
         break;
       case OrderStatus.PICKED_UP:
-        content = <DropOffView />;
+        content = <DropOffView activeOrder={activeOrder} courier={courier}  />;
         break;
       default:
-        content = <DefaultView />;
+        content = <DefaultView isCourierError={isCourierError} courier={courier}/>;
     }
   }
 

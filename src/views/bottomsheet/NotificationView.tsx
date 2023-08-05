@@ -1,24 +1,25 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import CountdownTimer from '../../components/CountdownTimer';
-import { RootState } from '../../store/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { acceptOrder, getOrderItemsById, rejectOrder } from '../../store/actions/OrderAction';
+import { acceptOrder, getOrderItemsById, rejectOrder, removeOrder } from '../../store/actions/OrderAction';
+import { Order } from '../../model/OrderModel';
 
 type NotificationViewProps = {
+  activeOrder: Order;
   onComplete: () => void;
 };
 
-const NotificationView = ({ onComplete }: NotificationViewProps) => {
+const NotificationView = ({ activeOrder, onComplete }: NotificationViewProps) => {
 
-    
-    const { activeOrder } = useSelector((state: RootState) => state.ORDERS);
     const dispatch = useDispatch();
 
     function handleComplete(): void {
         onComplete();
         console.log('completed');
         dispatch(rejectOrder(activeOrder.id) as any);
+        dispatch(removeOrder() as any)
+        
 
     }
 
@@ -40,7 +41,7 @@ const NotificationView = ({ onComplete }: NotificationViewProps) => {
             <View style={styles.first_row}>
                 <Text style={styles.text}>New Order!</Text>
                 <View style={styles.circle}>
-                    <CountdownTimer duration={200} onComplete={handleComplete} timeFormat='seconds' />
+                    <CountdownTimer duration={20} onComplete={handleComplete} timeFormat='seconds' />
                 </View>
             </View>
             <View style={styles.second_row}>
@@ -60,7 +61,6 @@ const NotificationView = ({ onComplete }: NotificationViewProps) => {
                         </View>
                         <View>
                             <Text>to</Text>
-                            {/* <Text style={styles.address}>address</Text> */}
                             <Text style={styles.address}>{activeOrder?.address}</Text>
                         </View>
 
@@ -69,12 +69,10 @@ const NotificationView = ({ onComplete }: NotificationViewProps) => {
                 <View style={styles.second_column}>
                         <View>
                             <Text>price</Text>
-                        {/* <Text style={styles.price}>5$</Text> */}
                         <Text style={styles.price}>{activeOrder?.deliveryFee.toFixed(0)} €</Text>
                         </View>
                         <View>
                             <Text>total km</Text>
-                        {/* <Text style={styles.distance}>2km</Text> */}
                         <Text style={styles.distance}>{activeOrder?.d2Distance.toFixed(0)} km</Text>
                         </View>
                 </View>
@@ -107,7 +105,6 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         borderRadius: 25,
-        // backgroundColor: 'orange',
         justifyContent: 'center',
         alignItems: 'center',
     },

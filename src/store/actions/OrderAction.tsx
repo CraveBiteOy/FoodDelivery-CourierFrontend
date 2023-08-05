@@ -43,7 +43,7 @@ export const rejectOrder = (orderId: number) => async (dispatch: Dispatch<ACTION
         // update the state of the order
       dispatch(updateOrder(response.data));
   } catch (error : any) {
-    console.log("reject error : "+ error);
+    console.log("reject error : "+ error?.response?.data?.messages.toString());
     dispatch(rejectOrderFailure(error?.response?.data?.messages.toString() || 'An unknown error occurred'));
   }
 };
@@ -175,9 +175,12 @@ const updateCourierAndOrderLocationAfterPickupFailure = (error: unknown) => ({
 
 
 //TEST
-
 // rest order error 
-export const restOrderError = (data : any) => ({
+export const restOrderError = () => ({
   type: "REST_ORDER_ERROR",
-  payload: data,
+});
+
+// Action for removing the order when the courier rejects it
+export const removeOrder = () => ({
+  type: "REMOVE_ORDER",
 });

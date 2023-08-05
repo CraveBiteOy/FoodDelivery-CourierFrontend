@@ -3,19 +3,20 @@ import React, { useState, useEffect } from 'react';
 import MapView, { Marker } from 'react-native-maps';
 import { StyleSheet, View, Image, Text } from 'react-native';
 import { getLocation } from '../../utils/location';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
-import { OrderStatus } from '../../model/OrderModel';
-// import {sampleData} from '../../data/smapleData';
+import { Order, OrderStatus } from '../../model/OrderModel';
 import CountdownTimer from '../../components/CountdownTimer';
+import { Courier } from '../../model/CourierModel';
 
 
 const OULU_LATITUDE = 65.014167;
 const OULU_LONGITUDE = 25.471944;
 
-const Map = () => {
-  const { courier } = useSelector((state: RootState) => state.COURIERS);
-  const { activeOrder } = useSelector((state: RootState) => state.ORDERS);
+
+type MapProps = {
+  activeOrder: Order;
+  courier: Courier ;
+}
+const Map = ({ activeOrder, courier }: MapProps) => {
 
   const [region, setRegion] = useState({
     latitude: OULU_LATITUDE,

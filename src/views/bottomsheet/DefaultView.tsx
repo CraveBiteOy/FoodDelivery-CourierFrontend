@@ -1,19 +1,21 @@
 import React, { useCallback, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { checkIsNewCourier, getAuthenticatedCourier, updateCourierStatus } from '../../store/actions/CourierAction';
-import { useDispatch, useSelector } from 'react-redux';
+import {getAuthenticatedCourier, updateCourierStatus } from '../../store/actions/CourierAction';
+import { useDispatch } from 'react-redux';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigators/MyStack';
 import { useNavigation } from '@react-navigation/native';
 import { useEffect } from 'react';
-import { RootState } from '../../store/store';
 import { closeSocket, setupSocket } from '../../utils/setupSocket';
-import { CourierStatus } from '../../model/CourierModel';
+import { Courier, CourierStatus } from '../../model/CourierModel';
 
-const DefaultView = () => {
+type DefaultViewProps = {
+  courier: Courier;
+  isCourierError: boolean;
+};
+  const DefaultView = ({ courier, isCourierError }: DefaultViewProps) => {
   const [isOnline, setIsOnline] = useState(false);
   const dispatch = useDispatch();
-  const { courier, isCourierError } = useSelector((state: RootState) => state.COURIERS);
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
 
