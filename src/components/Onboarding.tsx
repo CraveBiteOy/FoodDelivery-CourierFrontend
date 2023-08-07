@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import {ThemeType, useTheme} from "../styles/theme"
 
 type OnboardingProps = {
     header: string;
@@ -11,6 +12,8 @@ type OnboardingProps = {
 };
 
 const Onboarding = ({ header, text, buttonLabel, onPress, onPress2, buttonLabel2 }: OnboardingProps) => {
+    const { theme } = useTheme();
+    const styles = getStyles(theme);
 
 
     return (
@@ -36,9 +39,10 @@ const Onboarding = ({ header, text, buttonLabel, onPress, onPress2, buttonLabel2
 
 }
 
-const styles = StyleSheet.create({
+const getStyles = (theme: ThemeType) => StyleSheet.create({
 
     container: {
+        backgroundColor: theme.backgroundColor,
         flex: 1,
         alignContent: 'center',
         justifyContent: 'center',
@@ -54,6 +58,7 @@ const styles = StyleSheet.create({
         height: 115,
     },
     header: {
+        color: theme.color,
         fontSize: 20,
         fontWeight: 'bold',
         textAlign: 'center',
@@ -61,6 +66,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
     },
     text: {
+        color: theme.color,
         textAlign: 'center',
         fontSize: 15,
         lineHeight: 20,
@@ -68,7 +74,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
     },
     button: {
-        backgroundColor: '#f7691a',
+        backgroundColor: theme.primary,
         paddingHorizontal: 100,
         paddingVertical: 10,
         borderRadius: 15,
@@ -77,7 +83,7 @@ const styles = StyleSheet.create({
         bottom: 50,
     },
     button2: {
-        backgroundColor: '#f7691a',
+        backgroundColor: theme.primary,
         paddingHorizontal: 100,
         paddingVertical: 10,
         borderRadius: 15,
@@ -86,7 +92,7 @@ const styles = StyleSheet.create({
         bottom: 110,
     },
     buttonLabel: {
-        color: '#fff',
+        color: theme.buttonLabel,
         fontSize: 18,
         fontWeight: 'bold',
     },

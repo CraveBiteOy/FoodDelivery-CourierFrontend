@@ -1,6 +1,8 @@
 
 import React, { useEffect, useRef } from 'react';
-import { Text, StyleSheet, TouchableOpacity, Animated, Dimensions } from 'react-native';
+import { Text, StyleSheet, TouchableOpacity, Animated, Dimensions, Switch } from 'react-native';
+import {ThemeType} from "../styles/theme"
+
 
 type HamburgerMenuProps = {
   onClose: () => void;
@@ -9,6 +11,7 @@ type HamburgerMenuProps = {
   onAboutPress: () => void;
   onLogoutPress: () => void;
   isMenuVisible: boolean;
+  theme: ThemeType;
 };
 
 const HamburgerMenu = ({
@@ -18,9 +21,12 @@ const HamburgerMenu = ({
   onAboutPress,
   onLogoutPress,
   isMenuVisible,
+  theme,
 }: HamburgerMenuProps) => {
+
   const overlayWidth = 0.6 * Dimensions.get('window').width; 
   const overlayPosition = useRef(new Animated.Value(-overlayWidth)).current;
+  const styles = getStyles(theme);
 
   useEffect(() => {
     Animated.timing(overlayPosition, {
@@ -53,14 +59,14 @@ const HamburgerMenu = ({
   );
 };
 
-const styles = StyleSheet.create({
+  const getStyles = (theme: ThemeType) => StyleSheet.create({
   overlay: {
     position: 'absolute',
     top: 0,
     bottom: 0,
     left: 0,
     width: '60%',
-    backgroundColor: '#D3D3D3',
+    backgroundColor: theme.menuBackground,
     paddingVertical: 20,
     paddingHorizontal: 15,
   },
@@ -68,6 +74,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   itemText: {
+    color: theme.menuText,
     fontWeight: 'bold',
   },
   closeButton: {

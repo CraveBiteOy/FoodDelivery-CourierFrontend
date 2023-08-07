@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Animated } from 'react-native';
-import { set } from 'react-native-reanimated';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 type ErrorProps = {

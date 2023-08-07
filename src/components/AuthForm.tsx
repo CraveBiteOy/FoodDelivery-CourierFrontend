@@ -3,6 +3,8 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingVi
 import { validateConfirmPassword, validateEmail, validateName, validatePassword, validateRequired } from '../utils/validation';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
+import {ThemeType, useTheme} from "../styles/theme"
+
 
 
 export type AuthFormProps = {
@@ -28,6 +30,9 @@ const AuthForm = ({
  const [errors, setErrors] = useState<Record<string, string>>({});
  
   const { errorMessage, authError } = useSelector((state: RootState) => state.USERS);
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
+
 
 
   //handles the form submission
@@ -115,7 +120,7 @@ const AuthForm = ({
           <Text style={styles.buttonText}>{buttonText}</Text>
         </TouchableOpacity>
         <View style={styles.promptContainer}>
-          <Text>{promptText}</Text>
+          <Text style= {styles.promptText}>{promptText}</Text>
           <TouchableOpacity onPress={onPromptActionPress}>
             <Text style={styles.PromptActionText}>{PromptActionText}</Text>
           </TouchableOpacity>
@@ -125,11 +130,12 @@ const AuthForm = ({
   );
 };
 
-const styles = StyleSheet.create({
+  const getStyles = (theme: ThemeType) => StyleSheet.create({
   keyboard: {
     flex: 1,
   },
-  container: {
+    container: {
+    backgroundColor: theme.backgroundColor,
     flex: 1,
     paddingHorizontal: 20,
     paddingTop: 60,
@@ -137,7 +143,8 @@ const styles = StyleSheet.create({
   fieldContainer: {
     marginBottom: 20,
   },
-  label: {
+    label: {
+    color: theme.color,
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 8,
@@ -149,13 +156,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   button: {
-    backgroundColor: '#f7691a',
+    backgroundColor: theme.primary,
     borderRadius: 20,
     paddingVertical: 12,
     paddingHorizontal: 20,
   },
   buttonText: {
-    color: '#fff',
+    color: theme.buttonLabel,
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
@@ -166,9 +173,12 @@ const styles = StyleSheet.create({
     bottom: 0,
     marginBottom: 20,
     paddingHorizontal: 20,
-  },
+    },
+  promptText: {
+    color: theme.color,
+    },
   PromptActionText: {
-    color: '#f7691a',
+    color: theme.primary,
     fontWeight: 'bold',
     marginLeft: 5,
   },

@@ -4,6 +4,8 @@ import CountdownTimer from '../../components/CountdownTimer';
 import { useDispatch, useSelector } from 'react-redux';
 import { acceptOrder, getOrderItemsById, rejectOrder, removeOrder } from '../../store/actions/OrderAction';
 import { Order } from '../../model/OrderModel';
+import {ThemeType, useTheme} from "../../styles/theme"
+
 
 type NotificationViewProps = {
   activeOrder: Order;
@@ -13,6 +15,8 @@ type NotificationViewProps = {
 const NotificationView = ({ activeOrder, onComplete }: NotificationViewProps) => {
 
     const dispatch = useDispatch();
+    const { theme } = useTheme();
+    const styles = getStyles(theme);
 
     function handleComplete(): void {
         onComplete();
@@ -37,7 +41,7 @@ const NotificationView = ({ activeOrder, onComplete }: NotificationViewProps) =>
 
 
     return (
-        <View>
+        <View style={styles.container}>
             <View style={styles.first_row}>
                 <Text style={styles.text}>New Order!</Text>
                 <View style={styles.circle}>
@@ -46,7 +50,7 @@ const NotificationView = ({ activeOrder, onComplete }: NotificationViewProps) =>
             </View>
             <View style={styles.second_row}>
                 <View style={styles.first_column}>
-                    <View style={styles.container}>
+                    <View style={styles.sub_container}>
                         <Text style={styles.icon}>📍</Text>
                         <View
                             style={styles.dottedLine}>
@@ -90,7 +94,10 @@ const NotificationView = ({ activeOrder, onComplete }: NotificationViewProps) =>
 
 }
 
-const styles = StyleSheet.create({
+const getStyles = (theme: ThemeType) => StyleSheet.create({
+    container: {
+        backgroundColor: theme.backgroundColor,
+    },
     first_row: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -98,6 +105,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
     },
     text: {
+        color: theme.color,
         fontWeight: 'bold',
         fontSize: 18,
     },
@@ -124,7 +132,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         alignItems: 'center',
     },
-    container: {
+    sub_container: {
         flexDirection: 'column',
     },
     icon: {
@@ -151,13 +159,16 @@ const styles = StyleSheet.create({
        
     },
     address: {
+        color: theme.color,
         fontWeight: 'bold',
          maxWidth: 150
     },
     price: {
+        color: theme.color,
         fontWeight: 'bold',
     },
     distance: {
+         color: theme.color,
         fontWeight: 'bold',
     },
     third_row: {
@@ -171,12 +182,12 @@ const styles = StyleSheet.create({
         width: 100,
         height: 40,
         borderRadius: 25,
-        backgroundColor: 'orange',
+        backgroundColor: theme.primary,
         justifyContent: 'center',
         alignItems: 'center',
     },
     button_text: {
-        color: 'white',
+        color: theme.buttonLabel,
         fontWeight: 'bold',
     },
 });

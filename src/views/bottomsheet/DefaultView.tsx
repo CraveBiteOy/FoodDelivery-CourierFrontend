@@ -8,15 +8,20 @@ import { useNavigation } from '@react-navigation/native';
 import { useEffect } from 'react';
 import { closeSocket, setupSocket } from '../../utils/setupSocket';
 import { Courier, CourierStatus } from '../../model/CourierModel';
+import {ThemeType, useTheme} from "../../styles/theme"
 
 type DefaultViewProps = {
   courier: Courier;
   isCourierError: boolean;
 };
+
   const DefaultView = ({ courier, isCourierError }: DefaultViewProps) => {
-  const [isOnline, setIsOnline] = useState(false);
+  const [isOnline, setIsOnline] = useState(courier?.status === CourierStatus.ONLINE ? true : false);
   const dispatch = useDispatch();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
+
 
 
   //function to load the authenticated courier
@@ -46,7 +51,7 @@ type DefaultViewProps = {
         await dispatch(updateCourierStatus(CourierStatus.ONLINE) as any);
         await setupSocket(courier.id, dispatch);
       }
-       setIsOnline(!isOnline);
+      setIsOnline(!isOnline);
        
      }
   };
@@ -61,12 +66,14 @@ type DefaultViewProps = {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
+  const getStyles = (theme: ThemeType) => StyleSheet.create({
+    container: {
+    backgroundColor: theme.backgroundColor,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 16,
+    
   },
   text: {
     fontWeight: 'bold',
@@ -75,12 +82,12 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: 'orange',
+    backgroundColor: theme.primary,
     justifyContent: 'center',
     alignItems: 'center',
   },
   buttonText: {
-    color: 'white',
+    color: theme.buttonLabel,
     fontWeight: 'bold',
   },
 });

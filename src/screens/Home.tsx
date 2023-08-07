@@ -5,7 +5,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import Header from '../components/Header';
 import Map from '../views/other/Map';
 import Sheet from '../components/Sheet';
-import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { BottomSheetBackgroundProps, BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import HamburgerMenu from '../components/HamburgerMenu';
 import { RootStackParamList } from '../navigators/MyStack';
 import { logoutUtil } from '../utils/logout';
@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import { OrderStatus } from '../model/OrderModel';
 import ErrorModal from '../components/ErrorModal';
+import { useTheme } from "../styles/theme";
 
 
 const Home = () => {
@@ -25,6 +26,7 @@ const Home = () => {
   const [currentSnapPoint, setCurrentSnapPoint] = useState(0);
   const [errorMsg, setErrorMsg] = useState('');
   const [isErrorVisible, setIsErrorVisible] = useState(false);
+  const { theme } = useTheme();
   
   const snapPoints = [100, 400, 600];
 
@@ -110,12 +112,15 @@ const Home = () => {
           onAboutPress={handleAboutPress}
           onLogoutPress={handleLogoutPress}
           isMenuVisible={isMenuVisible}
+          theme = {theme}
         />
         <BottomSheetModal
           ref={bottomSheetModalRef}
           snapPoints={snapPoints}
           index={currentSnapPoint}
           enablePanDownToClose={false}
+          // backgroundComponent={SimpleBackground}
+
         >
           <Sheet
             activeOrder={activeOrder}

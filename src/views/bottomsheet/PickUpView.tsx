@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { pickUpOrder } from '../../store/actions/OrderAction';
 import { Order, OrderItem } from '../../model/OrderModel';
 import { OrderStatus } from '../../model/OrderModel';
+import {ThemeType, useTheme} from "../../styles/theme"
 
 type PickUpViewProps = {
     activeOrder: Order;
@@ -17,6 +18,8 @@ const PickUpView = ({ activeOrder, orderItems }: PickUpViewProps) => {
 
     const dispatch = useDispatch();
     const [checkedItems, setCheckedItems] = useState<Record<number, boolean>>({});
+    const { theme } = useTheme();
+    const styles = getStyles(theme);
 
     const PickUpOrder = () => {
         console.log("Picked up");
@@ -41,7 +44,7 @@ const PickUpView = ({ activeOrder, orderItems }: PickUpViewProps) => {
     const allItemsChecked = orderItems.every((item: OrderItem) => checkedItems[item.id])
 
     return (
-        <View>
+        <View style={styles.container}>
             <View style={styles.restaurant_info}>
                 <Text style={styles.header}>Restaurant</Text>
                 <Text style={styles.value}>{activeOrder?.restaurant?.name}</Text>
@@ -98,26 +101,31 @@ const PickUpView = ({ activeOrder, orderItems }: PickUpViewProps) => {
 }
 
 
-const styles = StyleSheet.create({
+const getStyles = (theme: ThemeType) => StyleSheet.create({
+    container: {
+        backgroundColor: theme.backgroundColor,
+    },
     restaurant_info: {  
         paddingHorizontal: 16,
         marginBottom: 25,
     },
     header: {
+        color: theme.color,
         fontWeight: 'bold',
         paddingVertical: 10,
         fontSize: 15,
     },
     value: {
+         color: theme.color,
         fontWeight: 'bold',
         fontSize: 14,
         paddingVertical: 5,
     },
     restaurant_address: {
+         color: theme.color,
         fontWeight: 'bold',
         fontSize: 12,
         paddingVertical: 5,
-        color: 'grey',
     },
     customer_container: {
         paddingHorizontal: 16,
@@ -129,9 +137,9 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
     },
     customer_header: {
+        color: theme.color,
         fontWeight: 'bold',
         fontSize: 14,
-        color: 'grey',
     },
     customer_n: {
         flexDirection: 'column',
@@ -167,12 +175,12 @@ const styles = StyleSheet.create({
         width: 150,
         height: 40,
         borderRadius: 25,
-        backgroundColor: 'orange',
+        backgroundColor: theme.primary,
         justifyContent: 'center',
         alignItems: 'center',
     },
     button_text: {
-        color: 'white',
+        color: theme.buttonLabel,
         fontWeight: 'bold',
     },
 });

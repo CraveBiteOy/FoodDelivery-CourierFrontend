@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { completeOrder } from '../../store/actions/OrderAction';
 import { Courier } from '../../model/CourierModel';
 import { Order } from '../../model/OrderModel';
+import {ThemeType, useTheme} from "../../styles/theme"
 
 type DropOffViewProps = {
     activeOrder: Order;
@@ -18,6 +19,8 @@ type DropOffViewProps = {
 const DropOffView = ({ activeOrder, courier }: DropOffViewProps) => {
 
     const dispatch = useDispatch();
+    const { theme } = useTheme();
+    const styles = getStyles(theme);
 
     const DropOffOrder = () => {
         console.log("Dropped off");
@@ -81,9 +84,10 @@ const DropOffView = ({ activeOrder, courier }: DropOffViewProps) => {
     );
 }
 
-const styles = StyleSheet.create({
+const getStyles = (theme: ThemeType) => StyleSheet.create({
     container: {
-         paddingHorizontal: 16,
+        backgroundColor: theme.backgroundColor,
+        paddingHorizontal: 16,
     },
     tite_container: {
         marginVertical: 20,
@@ -91,22 +95,26 @@ const styles = StyleSheet.create({
     main_title: {
         fontWeight: 'bold',
         fontSize: 20,
-        color: 'orange',
+        color: theme.primary,
     },
     sub_header: {
+        color: theme.color,
         fontWeight: 'bold',
         fontSize: 15,
         marginVertical: 10,
     },
     mini_header: {
+        color: theme.color,
         fontWeight: 'bold',
         fontSize: 13,
     },
     location_title: {
+        color: theme.color,
         fontWeight: 'bold',
         fontSize: 18,
     },
     address: {
+        color: theme.color,
         flexDirection: 'row',
     },
     table: {
@@ -133,12 +141,12 @@ const styles = StyleSheet.create({
         width: 150,
         height: 40,
         borderRadius: 25,
-        backgroundColor: 'orange',
+        backgroundColor: theme.primary,
         justifyContent: 'center',
         alignItems: 'center',
     },
     button_text: {
-        color: 'white',
+        color: theme.buttonLabel,
         fontWeight: 'bold',
     },
 });

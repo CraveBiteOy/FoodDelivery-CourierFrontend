@@ -8,6 +8,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { OrderStatus } from '../model/OrderModel';
 import { updateCourierLocationBeforePickup } from '../store/actions/CourierAction';
 import { updateCourierAndOrderLocationAfterPickup } from '../store/actions/OrderAction';
+import { ThemeType, useTheme } from "../styles/theme";
+ 
 
 
 const UpdateLocation = () => {
@@ -16,20 +18,22 @@ const UpdateLocation = () => {
 
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
     const { activeOrder } = useSelector((state: RootState) => state.ORDERS);
+    const { theme } = useTheme();
+    const styles = getStyles(theme);
     let orderId = activeOrder?.id;
     let orderStatus = activeOrder?.status;
 
     const dispatch = useDispatch();
 
     const handleSubmit = () => {
-        if (orderStatus === OrderStatus.ACCEPTED) {
-            dispatch(updateCourierLocationBeforePickup( Number(longitude), Number(latitude)) as any);
-        } else if (orderStatus === OrderStatus.PICKED_UP || orderStatus === OrderStatus.READY) {
+        if (orderStatus === OrderStatus.PICKED_UP) {
             console.log("location form submitted!");
+            console.log("after pickup");
             dispatch(updateCourierAndOrderLocationAfterPickup(orderId, Number(longitude), Number(latitude)) as any);
         }
         else {
-            console.log("you can't update your location now");
+             console.log("before pickup");
+            dispatch(updateCourierLocationBeforePickup( Number(longitude), Number(latitude)) as any);
         }
 
         navigation.navigate('Home')
@@ -66,13 +70,15 @@ const UpdateLocation = () => {
     );
 };
 
-const styles = StyleSheet.create({
+    const getStyles = (theme: ThemeType) => StyleSheet.create({
     container: {
+        backgroundColor: theme.backgroundColor,
         flex: 1,
         alignContent: 'center',
         justifyContent: 'center',
     },
     header: {
+        color: theme.color,
         fontSize: 20,
         fontWeight: 'bold',
         textAlign: 'center',
@@ -80,6 +86,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
     },
     text: {
+        color: theme.color,
         textAlign: 'center',
         fontSize: 15,
         lineHeight: 20,
@@ -91,6 +98,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     label: {
+        color: theme.color,
         fontSize: 16,
         fontWeight: 'bold',
         marginBottom: 8,
@@ -102,24 +110,18 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         height: 40,
         borderWidth: 1,
-        borderColor: '#333',
+        borderColor: theme.color,
         paddingHorizontal: 8,
     },
-    buttonText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
     button: {
-        backgroundColor: '#f7691a',
+        backgroundColor:theme.primary,
         paddingHorizontal: 100,
         paddingVertical: 10,
         borderRadius: 15,
         alignSelf: 'center',
     },
     buttonLabel: {
-        color: '#fff',
+        color: theme.buttonLabel,
         fontSize: 18,
         fontWeight: 'bold',
     },
