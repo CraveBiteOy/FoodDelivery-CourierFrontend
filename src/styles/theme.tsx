@@ -10,6 +10,7 @@ export type ThemeType = {
   buttonLabel: string;
   menuBackground: string;
   menuText: string;
+  sheetBackground: string;
   
 };
 
@@ -22,6 +23,7 @@ export const lightTheme: ThemeType = {
   buttonLabel: '#ffffff',
   menuBackground: '#f2f2f2',    
   menuText: '#333333',
+  sheetBackground: '#f7f7f7',
 };
 
 export const darkTheme: ThemeType = {
@@ -31,8 +33,9 @@ export const darkTheme: ThemeType = {
   secondary: '#1a6ef7',
   accent: '#f79460',
   buttonLabel: '#ffffff',
-  menuBackground: '#1a1a1a', 
+  menuBackground: '#4a4a4a', 
   menuText: '#e5e5e5',
+  sheetBackground: '#1a1a1a',
 };
 
 type ThemeContextType = {

@@ -152,7 +152,7 @@ const AuthForm = ({
   input: {
     height: 40,
     borderWidth: 1,
-    borderColor: '#333',
+    borderColor: "grey",
     paddingHorizontal: 8,
   },
   button: {

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
+import {ThemeType, useTheme} from "../styles/theme"
 
 export type CountdownTimerProps = {
     duration: number;
@@ -10,6 +11,8 @@ export type CountdownTimerProps = {
 
 const CountdownTimer = ({ duration, onComplete, timeFormat = 'seconds' }: CountdownTimerProps ) => {
   const [isPlaying, setIsPlaying] = useState(true);
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
 
   const handleComplete = () => {
     setIsPlaying(false);
@@ -53,19 +56,19 @@ const CountdownTimer = ({ duration, onComplete, timeFormat = 'seconds' }: Countd
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (theme: ThemeType) => StyleSheet.create({
   timeContainer: {
     alignItems: 'center',
   },
   time: {
     fontSize: 13,
     fontWeight: 'bold',
-    color: "black",
+    color: theme.color,
   },
   label: {
     fontSize: 13,
     fontWeight: 'bold',
-    color: "black"
+    color: theme.color,
   },
 });
 

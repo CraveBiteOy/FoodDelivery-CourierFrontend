@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import { OrderStatus } from '../model/OrderModel';
 import ErrorModal from '../components/ErrorModal';
-import { useTheme } from "../styles/theme";
+import { ThemeType, useTheme } from "../styles/theme";
 
 
 const Home = () => {
@@ -26,7 +26,8 @@ const Home = () => {
   const [currentSnapPoint, setCurrentSnapPoint] = useState(0);
   const [errorMsg, setErrorMsg] = useState('');
   const [isErrorVisible, setIsErrorVisible] = useState(false);
-  const { theme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
+  const styles = getStyles(theme);
   
   const snapPoints = [100, 400, 600];
 
@@ -93,7 +94,7 @@ const Home = () => {
             <ErrorModal message={errorMsg} />
           </>
         }
-        <Header onMenuPress={toggleMenu} />
+        <Header onMenuPress={toggleMenu} title="Home" />
         <Map
           activeOrder={activeOrder}
           courier={courier}
@@ -112,15 +113,15 @@ const Home = () => {
           onAboutPress={handleAboutPress}
           onLogoutPress={handleLogoutPress}
           isMenuVisible={isMenuVisible}
-          theme = {theme}
+          theme={theme}
+          toggleTheme={toggleTheme}
         />
         <BottomSheetModal
           ref={bottomSheetModalRef}
           snapPoints={snapPoints}
           index={currentSnapPoint}
           enablePanDownToClose={false}
-          // backgroundComponent={SimpleBackground}
-
+          backgroundComponent={CustomBackgroundComponent}
         >
           <Sheet
             activeOrder={activeOrder}
@@ -135,7 +136,7 @@ const Home = () => {
   );
 };
 
-const styles = StyleSheet.create({
+  const getStyles = (theme: ThemeType) => StyleSheet.create({
   overlay: {
     position: 'absolute',
     top: 0,
@@ -143,6 +144,21 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
   },
+  customBackground: {
+    backgroundColor: theme.sheetBackground,
+    borderRadius: 20,
+  
+  },
 });
 
 export default Home;
+
+
+// custom component to stlye up bottom sheet background
+const CustomBackgroundComponent = (props: BottomSheetBackgroundProps) => {
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
+
+  return <View style={[props.style, styles.customBackground]} />;
+};
+

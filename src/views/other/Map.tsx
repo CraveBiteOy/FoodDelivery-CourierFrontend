@@ -52,7 +52,7 @@ const Map = ({ activeOrder, courier }: MapProps) => {
 
   return (
     <View style={styles.container}>
-      <MapView style={styles.map} region={region}>
+      <MapView style={styles.map} region={region} >
         <Marker
           coordinate={{
             latitude: region.latitude,

@@ -68,14 +68,15 @@ type DefaultViewProps = {
 
   const getStyles = (theme: ThemeType) => StyleSheet.create({
     container: {
-    backgroundColor: theme.backgroundColor,
+    // backgroundColor: theme.backgroundColor,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 16,
     
   },
-  text: {
+    text: {
+    color: theme.color,
     fontWeight: 'bold',
   },
   button: {

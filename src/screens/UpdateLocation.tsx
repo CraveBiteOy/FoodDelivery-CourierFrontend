@@ -9,6 +9,7 @@ import { OrderStatus } from '../model/OrderModel';
 import { updateCourierLocationBeforePickup } from '../store/actions/CourierAction';
 import { updateCourierAndOrderLocationAfterPickup } from '../store/actions/OrderAction';
 import { ThemeType, useTheme } from "../styles/theme";
+import Header from '../components/Header';
  
 
 
@@ -40,6 +41,8 @@ const UpdateLocation = () => {
     };
 
     return (
+        <>
+        <Header onBackPress={() => navigation.goBack()} title="" />
         <View style={styles.container}>
             <Text style={styles.header}>Do you want to update your location?</Text>
             <Text style={styles.text}>
@@ -66,7 +69,8 @@ const UpdateLocation = () => {
             <TouchableOpacity style={styles.button} onPress={handleSubmit}>
                 <Text style={styles.buttonLabel}>Submit</Text>
             </TouchableOpacity>
-        </View>
+            </View>
+            </>
     );
 };
 

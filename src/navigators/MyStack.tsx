@@ -41,9 +41,9 @@ const MyStack = () => {
                 <Stack.Screen name="Signup" component={Signup} options={{ headerShown: false }} />
                 <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
                 <Stack.Screen name="Home" component={Home}  options={{ headerShown: false }} />
-                <Stack.Screen name="Profile" component={Profile} />
-                <Stack.Screen name="UpdateLocation" component={UpdateLocation} />
-                <Stack.Screen name="Transportation" component={TransportationMode} />
+                <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
+                <Stack.Screen name="UpdateLocation" component={UpdateLocation} options={{ headerShown: false }} />
+                <Stack.Screen name="Transportation" component={TransportationMode} options={{ headerShown: false }} />
             </Stack.Navigator>
         </NavigationContainer>
     );

@@ -14,8 +14,6 @@ export const acceptOrder = (orderId: number) => async (dispatch: Dispatch<ACTION
     dispatch(acceptOrderSuccess(response.data));
     console.log(response.data);
     console.log("accepted by hajri so the order is: " + response.data.status);
-      // update the state of the order
-      dispatch(updateOrder(response.data));
   } catch (error : any) {
     dispatch(acceptOrderFailure(error?.response?.data?.messages.toString() || 'An unknown error occurred'));
   }
@@ -40,8 +38,6 @@ export const rejectOrder = (orderId: number) => async (dispatch: Dispatch<ACTION
     });
       console.log("reject response : "+ response.data);
       dispatch(rejectOrderSuccess(response.data));
-        // update the state of the order
-      dispatch(updateOrder(response.data));
   } catch (error : any) {
     console.log("reject error : "+ error?.response?.data?.messages.toString());
     dispatch(rejectOrderFailure(error?.response?.data?.messages.toString() || 'An unknown error occurred'));
@@ -67,8 +63,6 @@ export const pickUpOrder = (orderId: number) => async (dispatch: Dispatch<ACTION
     });
      console.log("Hajri picked up so status is : "+ response.data.status);
       dispatch(pickUpOrderSuccess(response.data));
-        // update the state of the order
-      dispatch(updateOrder(response.data));
   } catch (error : any) {
     console.log(error?.response?.data?.messages.toString());
     dispatch(pickUpOrderFailure(error?.response?.data?.messages.toString() || 'An unknown error occurred'));
@@ -94,8 +88,6 @@ export const completeOrder = (orderId: number) => async (dispatch: Dispatch<ACTI
     });
       console.log("Hajri completed so status is : "+ response.data.status);
       dispatch(completeOrderSuccess(response.data));
-        // update the state of the order
-      dispatch(updateOrder(response.data));
   } catch (error : any) {
     console.log(error?.response?.data?.messages.toString());
     dispatch(completeOrderFailure(error?.response?.data?.messages.toString() || 'An unknown error occurred'));
@@ -156,7 +148,6 @@ export const updateCourierAndOrderLocationAfterPickup = (orderId: number, longit
     });
     console.log("current status is " + response.data.status);
     dispatch(updateCourierAndOrderLocationAfterPickupSuccess(response.data));
-    dispatch(updateOrder(response.data));
   } catch (error : any) {
     console.log("error is " + error?.response?.data?.messages.toString());
     dispatch(updateCourierAndOrderLocationAfterPickupFailure(error?.response?.data?.messages.toString() || 'An unknown error occurred'));

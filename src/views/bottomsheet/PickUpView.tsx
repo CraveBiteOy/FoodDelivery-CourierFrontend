@@ -45,6 +45,9 @@ const PickUpView = ({ activeOrder, orderItems }: PickUpViewProps) => {
 
     return (
         <View style={styles.container}>
+            {activeOrder?.status === OrderStatus.READY && (
+                <Text style={styles.ready}>Ready</Text>
+            )}
             <View style={styles.restaurant_info}>
                 <Text style={styles.header}>Restaurant</Text>
                 <Text style={styles.value}>{activeOrder?.restaurant?.name}</Text>
@@ -75,7 +78,7 @@ const PickUpView = ({ activeOrder, orderItems }: PickUpViewProps) => {
                     </DataTable.Header>
                     {orderItems.map((item: OrderItem) => (
                         <DataTable.Row key={item.id} style={styles.tableRow}>
-                            <DataTable.Cell>{item?.dish?.name}</DataTable.Cell>
+                            <DataTable.Cell >{item?.dish?.name}</DataTable.Cell>
                             <DataTable.Cell numeric>{item?.quantity}</DataTable.Cell>
                             <DataTable.Cell numeric>
                                 <Checkbox
@@ -103,28 +106,40 @@ const PickUpView = ({ activeOrder, orderItems }: PickUpViewProps) => {
 
 const getStyles = (theme: ThemeType) => StyleSheet.create({
     container: {
-        backgroundColor: theme.backgroundColor,
+        // backgroundColor: theme.backgroundColor,
     },
     restaurant_info: {  
         paddingHorizontal: 16,
         marginBottom: 25,
     },
+    ready: {
+        color: theme.buttonLabel,
+        backgroundColor: theme.primary,
+        textAlign: 'center',
+        paddingVertical: 5,
+        marginHorizontal: 16,
+        fontWeight: 'bold',
+        alignSelf: 'flex-end',
+        width: 70,
+        height: 30,
+        borderRadius: 25,
+    },
     header: {
         color: theme.color,
         fontWeight: 'bold',
         paddingVertical: 10,
-        fontSize: 15,
+        fontSize: 18,
     },
     value: {
          color: theme.color,
         fontWeight: 'bold',
-        fontSize: 14,
+        fontSize: 15,
         paddingVertical: 5,
     },
     restaurant_address: {
          color: theme.color,
         fontWeight: 'bold',
-        fontSize: 12,
+        fontSize: 14,
         paddingVertical: 5,
     },
     customer_container: {
@@ -163,7 +178,9 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
         backgroundColor: 'lightgrey',
     },
     tableRow: {
-        backgroundColor: 'white',
+        // backgroundColor: theme.backgroundColor,
+        backgroundColor: 'darkgrey',
+    
     },
     button_box: {
         paddingHorizontal: 16,

@@ -48,14 +48,14 @@ const DropOffView = ({ activeOrder, courier }: DropOffViewProps) => {
                 </View>
                 <View style={styles.table}>
                     <DataTable>
-                        <DataTable.Header>
-                            <DataTable.Title>Entrance</DataTable.Title>
+                        <DataTable.Header style={styles.t_header}>
+                            <DataTable.Title >Entrance</DataTable.Title>
                             <DataTable.Title numeric>Floor</DataTable.Title>
                             <DataTable.Title numeric>check</DataTable.Title>
                         </DataTable.Header>
-                        <DataTable.Row>
-                            <DataTable.Cell>A</DataTable.Cell>
-                            <DataTable.Cell numeric>1</DataTable.Cell>
+                        <DataTable.Row style={styles.tableRow}>
+                            <DataTable.Cell >A</DataTable.Cell>
+                            <DataTable.Cell >1</DataTable.Cell>
                             <DataTable.Cell numeric>5</DataTable.Cell>
                         </DataTable.Row>
                     </DataTable>
@@ -64,14 +64,14 @@ const DropOffView = ({ activeOrder, courier }: DropOffViewProps) => {
                      <Icon name="info-circle" size={24} color="black" />
                     <View style={styles.b_container}>
                         <Text style={styles.mini_header}>gatecode</Text>
-                        <Text>771</Text>
+                        <Text style={styles.value}>771</Text>
                     </View>
                 </View>
                 <View style={styles.a_container}>
                     <Icon name="info-circle" size={24} color="black" />
                     <View style={styles.b_container}>
                         <Text style={styles.mini_header}>note</Text>
-                        <Text>{activeOrder?.note}</Text>
+                        <Text style={styles.value}>{activeOrder?.note}</Text>
                     </View>
                 </View>
                 <View style={styles.button_box}>
@@ -86,7 +86,7 @@ const DropOffView = ({ activeOrder, courier }: DropOffViewProps) => {
 
 const getStyles = (theme: ThemeType) => StyleSheet.create({
     container: {
-        backgroundColor: theme.backgroundColor,
+        // backgroundColor: theme.backgroundColor,
         paddingHorizontal: 16,
     },
     tite_container: {
@@ -94,19 +94,22 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
     },
     main_title: {
         fontWeight: 'bold',
-        fontSize: 20,
+        fontSize: 22,
         color: theme.primary,
     },
     sub_header: {
         color: theme.color,
         fontWeight: 'bold',
-        fontSize: 15,
+        fontSize: 16,
         marginVertical: 10,
     },
     mini_header: {
         color: theme.color,
         fontWeight: 'bold',
         fontSize: 13,
+    },
+    value: {
+        color: theme.color,
     },
     location_title: {
         color: theme.color,
@@ -118,7 +121,14 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
         flexDirection: 'row',
     },
     table: {
-        paddingHorizontal: 16,
+        // paddingHorizontal: 16,
+    },
+    t_header: {
+         
+        backgroundColor: "darkgrey",
+    },
+    tableRow: {
+        backgroundColor: 'darkgrey',
     },
     a_container: {
         flexDirection: 'row',

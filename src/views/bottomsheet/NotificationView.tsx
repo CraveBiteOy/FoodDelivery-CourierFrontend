@@ -45,7 +45,7 @@ const NotificationView = ({ activeOrder, onComplete }: NotificationViewProps) =>
             <View style={styles.first_row}>
                 <Text style={styles.text}>New Order!</Text>
                 <View style={styles.circle}>
-                    <CountdownTimer duration={20} onComplete={handleComplete} timeFormat='seconds' />
+                    <CountdownTimer duration={30} onComplete={handleComplete} timeFormat='seconds' />
                 </View>
             </View>
             <View style={styles.second_row}>
@@ -64,7 +64,7 @@ const NotificationView = ({ activeOrder, onComplete }: NotificationViewProps) =>
                             <Text style={styles.address}>{activeOrder?.restaurant?.address}</Text>
                         </View>
                         <View>
-                            <Text>to</Text>
+                            <Text style={styles.to}>to</Text>
                             <Text style={styles.address}>{activeOrder?.address}</Text>
                         </View>
 
@@ -72,11 +72,11 @@ const NotificationView = ({ activeOrder, onComplete }: NotificationViewProps) =>
                 </View>
                 <View style={styles.second_column}>
                         <View>
-                            <Text>price</Text>
+                            <Text style={styles.n_title}>price</Text>
                         <Text style={styles.price}>{activeOrder?.deliveryFee.toFixed(0)} €</Text>
                         </View>
                         <View>
-                            <Text>total km</Text>
+                            <Text style={styles.n_title}>total km</Text>
                         <Text style={styles.distance}>{activeOrder?.d2Distance.toFixed(0)} km</Text>
                         </View>
                 </View>
@@ -96,7 +96,7 @@ const NotificationView = ({ activeOrder, onComplete }: NotificationViewProps) =>
 
 const getStyles = (theme: ThemeType) => StyleSheet.create({
     container: {
-        backgroundColor: theme.backgroundColor,
+        // backgroundColor: theme.backgroundColor,
     },
     first_row: {
         flexDirection: 'row',
@@ -107,7 +107,7 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
     text: {
         color: theme.color,
         fontWeight: 'bold',
-        fontSize: 18,
+        fontSize: 20,
     },
     circle: {
         width: 50,
@@ -132,6 +132,10 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
         justifyContent: 'space-around',
         alignItems: 'center',
     },
+    n_title: {
+        color: theme.primary,
+        fontWeight: 'bold',
+    },
     sub_container: {
         flexDirection: 'column',
     },
@@ -155,8 +159,14 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
     },
 
     from: {
+        color: theme.primary,
+        fontWeight: 'bold',
         marginTop: 10,
        
+    },
+    to: {
+        color: theme.primary,
+        fontWeight: 'bold',
     },
     address: {
         color: theme.color,
