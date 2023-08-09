@@ -37,3 +37,8 @@ link:
 - React-Native
 - Typescript
 - Tailwind CSS
+
+# Technologies for this repository
+- React-Native and Redux
+- Typescript
+- WebSockets
