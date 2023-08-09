@@ -8,6 +8,7 @@ The project aims to simulate the whole process of food delivered from the time w
 
 The Food delivery project includes 4 repositories and was developed by Quan Doan and Hajri Mohamed.
 - Backend repository: Quan Doan
+- Backend v2 repository: Hajri mohamed
 - Customer mobile: Quan Doan 
 - Restaurant mobile: Quan Doan
 - Courier mobile: Hajri Mohamed
@@ -19,13 +20,14 @@ link:
 
 - **User Authentication**: courier can login or signup
   
-- **Real-time Map**: courier can see estimated times and locations of pickup, and dropoff.
+- **Real-time Map**: courier can see their current location, estimated times and pickup locations, and dropoff locations.
   
-- **Order stages on BottomSheet**: courier can accept, or reject the receiving order, pickup, drop off the order
+- **Order stages on BottomSheet**: courier can go online offline, accept, or reject the receiving order, pickup, and drop off the order
 
-- **Real-time Updates**: courier receives new orders, order status, error messages, ..etc  
+- **Real-time Updates**: courier can receive new orders, order status, error messages, ..etc  
   
-- **Hamburger Menu**: courier can view stats and profile, and change navigation mode and dark-light mode.
+- **Hamburger Menu**: courier can view stats and profile, change navigation, and logout
+- **Dark-mode**
 
 # Technologies for the project
 - SpringBoot, Spring Security, Maven
