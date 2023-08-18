@@ -3,12 +3,12 @@ import { ACTION, declaredStateUser } from "../../model/UserModel"
 
 let initialState = {
     authUser: {},
-    // userUpdateStatus: false,
     userUpdated: {},
     errorMessage: null,
     authSuccess: false,
     authError: false,
     courier: {},
+    loading: false,
 }
 
 export default (state: declaredStateUser = initialState, action: ACTION) => {
@@ -45,6 +45,16 @@ export default (state: declaredStateUser = initialState, action: ACTION) => {
                 ...state,
                 errorMessage: action.payload,
                 authError: true
+            }
+        case "LOADING_START":
+            return {
+                ...state,
+                loading: true
+            }
+        case "LOADING_END":
+            return {
+                ...state,
+                loading: false
             }
         default:
             return state

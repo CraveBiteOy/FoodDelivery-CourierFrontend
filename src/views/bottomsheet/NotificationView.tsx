@@ -5,14 +5,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { acceptOrder, getOrderItemsById, rejectOrder, removeOrder } from '../../store/actions/OrderAction';
 import { Order } from '../../model/OrderModel';
 import {ThemeType, useTheme} from "../../styles/theme"
+// import LoadingIndicator from '../../components/LoadingIndicator';
 
 
 type NotificationViewProps = {
   activeOrder: Order;
   onComplete: () => void;
+  orderLoading: boolean;
 };
 
-const NotificationView = ({ activeOrder, onComplete }: NotificationViewProps) => {
+const NotificationView = ({ activeOrder, onComplete, orderLoading }: NotificationViewProps) => {
 
     const dispatch = useDispatch();
     const { theme } = useTheme();
@@ -38,8 +40,6 @@ const NotificationView = ({ activeOrder, onComplete }: NotificationViewProps) =>
         dispatch(rejectOrder(activeOrder.id) as any);
     }
 
-
-
     return (
         <View style={styles.container}>
             <View style={styles.first_row}>
@@ -60,7 +60,6 @@ const NotificationView = ({ activeOrder, onComplete }: NotificationViewProps) =>
                     <View style={styles.trip_info}>
                         <View>
                             <Text style={styles.from}>from</Text>
-                            {/* <Text style={styles.address}>address</Text> */}
                             <Text style={styles.address}>{activeOrder?.restaurant?.address}</Text>
                         </View>
                         <View>

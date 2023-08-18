@@ -56,7 +56,7 @@ const DropOffView = ({ activeOrder, courier }: DropOffViewProps) => {
                         <DataTable.Row style={styles.tableRow}>
                             <DataTable.Cell >A</DataTable.Cell>
                             <DataTable.Cell >1</DataTable.Cell>
-                            <DataTable.Cell numeric>5</DataTable.Cell>
+                            <DataTable.Cell numeric >5</DataTable.Cell>
                         </DataTable.Row>
                     </DataTable>
                 </View>
@@ -125,10 +125,12 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
     },
     t_header: {
          
-        backgroundColor: "darkgrey",
+         backgroundColor: "darkgrey",
+        // backgroundColor: theme.primary,
     },
     tableRow: {
-        backgroundColor: 'darkgrey',
+        backgroundColor: 'lightgrey',
+        // backgroundColor: theme.primary,
     },
     a_container: {
         flexDirection: 'row',

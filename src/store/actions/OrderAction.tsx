@@ -7,6 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const acceptOrder = (orderId: number) => async (dispatch: Dispatch<ACTION>, getState: any) => {
   try {
+    dispatch(orderLoadingStart());
     const token = await AsyncStorage.getItem("token");
     const response = await axios.put(`${HOST_URL}/api/orders/order/id/${orderId}/acceptByCourier`, {}, {
       headers: { Authorization: token }
@@ -16,6 +17,8 @@ export const acceptOrder = (orderId: number) => async (dispatch: Dispatch<ACTION
     console.log("accepted by hajri so the order is: " + response.data.status);
   } catch (error : any) {
     dispatch(acceptOrderFailure(error?.response?.data?.messages.toString() || 'An unknown error occurred'));
+  } finally {
+    dispatch(orderLoadingEnd());
   }
 };
 
@@ -57,6 +60,7 @@ const rejectOrderFailure = (error: unknown) => ({
 // Mark an order as picked up
 export const pickUpOrder = (orderId: number) => async (dispatch: Dispatch<ACTION>, getState: any) => {
   try {
+     dispatch(orderLoadingStart());
     const token = await AsyncStorage.getItem("token");
     const response = await axios.put(`${HOST_URL}/api/orders/order/id/${orderId}/pickedUp` ,{}, {
       headers: { Authorization: token }
@@ -66,6 +70,8 @@ export const pickUpOrder = (orderId: number) => async (dispatch: Dispatch<ACTION
   } catch (error : any) {
     console.log(error?.response?.data?.messages.toString());
     dispatch(pickUpOrderFailure(error?.response?.data?.messages.toString() || 'An unknown error occurred'));
+  } finally {
+    dispatch(orderLoadingEnd());
   }
 };
 
@@ -82,6 +88,7 @@ const pickUpOrderFailure = (error: unknown) => ({
 // Mark an order as completed
 export const completeOrder = (orderId: number) => async (dispatch: Dispatch<ACTION>, getState: any) => {
   try {
+     dispatch(orderLoadingStart());
     const token = await AsyncStorage.getItem("token");
     const response = await axios.put(`${HOST_URL}/api/orders/order/id/${orderId}/completed`,{}, {
       headers: { Authorization: token }
@@ -91,6 +98,8 @@ export const completeOrder = (orderId: number) => async (dispatch: Dispatch<ACTI
   } catch (error : any) {
     console.log(error?.response?.data?.messages.toString());
     dispatch(completeOrderFailure(error?.response?.data?.messages.toString() || 'An unknown error occurred'));
+  } finally {
+    dispatch(orderLoadingEnd());
   }
 };
 
@@ -116,6 +125,7 @@ export const updateOrder = (order: any) => ({
 // Action for getting single order items by id 
 export const getOrderItemsById = (orderId: number) => async (dispatch: Dispatch<ACTION>, getState: any) => {
   try {
+     dispatch(orderLoadingStart());
     const token = await AsyncStorage.getItem("token");
     const response = await axios.get(`${HOST_URL}/api/orderdishes/order/${orderId}`, {
       headers: { Authorization: token }
@@ -124,6 +134,8 @@ export const getOrderItemsById = (orderId: number) => async (dispatch: Dispatch<
   } catch (error : any) {
     console.log(error);
     dispatch(getOrderItemsByIdFailure(error?.response?.data?.messages.toString() || 'An unknown error occurred'));
+  } finally {
+    dispatch(orderLoadingEnd());
   }
 }
 
@@ -141,6 +153,7 @@ const getOrderItemsByIdFailure = (error: unknown) => ({
 export const updateCourierAndOrderLocationAfterPickup = (orderId: number, longitude: number, latitude: number) => async (dispatch: Dispatch<ACTION>, getState: any) => {
 
   try {
+     dispatch(orderLoadingStart());
     const token = await AsyncStorage.getItem("token");
     const response = await axios.put(
       `${HOST_URL}/api/orders/order/id/${orderId}/longitude/${longitude}/latitude/${latitude}`, {}, {
@@ -151,6 +164,8 @@ export const updateCourierAndOrderLocationAfterPickup = (orderId: number, longit
   } catch (error : any) {
     console.log("error is " + error?.response?.data?.messages.toString());
     dispatch(updateCourierAndOrderLocationAfterPickupFailure(error?.response?.data?.messages.toString() || 'An unknown error occurred'));
+  } finally {
+    dispatch(orderLoadingEnd());
   }
 }
 
@@ -165,13 +180,21 @@ const updateCourierAndOrderLocationAfterPickupFailure = (error: unknown) => ({
 });
 
 
-//TEST
 // rest order error 
-export const restOrderError = () => ({
-  type: "REST_ORDER_ERROR",
+export const resetOrderError = () => ({
+  type: "RESET_ORDER_ERROR",
 });
 
 // Action for removing the order when the courier rejects it
 export const removeOrder = () => ({
   type: "REMOVE_ORDER",
 });
+
+export const orderLoadingStart = () => ({
+  type: "ORDER_LOADING_START",
+});
+
+export const orderLoadingEnd = () => ({
+  type: "ORDER_LOADING_END",
+});
+

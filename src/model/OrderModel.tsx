@@ -95,6 +95,7 @@ export interface OrderState {
   OrderErrorMessage: string | null;
   orderItems: OrderItem[];
   isOrderError: boolean;
+  orderLoading: boolean;
 }
 
 // Interface for representing an action

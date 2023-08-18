@@ -6,6 +6,7 @@ const initialState: OrderState = {
   OrderErrorMessage: null,
   orderItems: [],
   isOrderError: false,
+  orderLoading: false,
 };
 
 export default (state = initialState, action: ACTION) => {
@@ -51,8 +52,17 @@ export default (state = initialState, action: ACTION) => {
         OrderErrorMessage: action.payload,
         isOrderError: true,
       };
-    //TEST
-    case "REST_ORDER_ERROR":
+    case "ORDER_LOADING_START":
+      return {
+        ...state,
+        orderLoading: true,
+      };
+    case "ORDER_LOADING_END":
+      return {
+        ...state,
+        orderLoading: false,
+      };
+    case "RESET_ORDER_ERROR":
       return {
         ...state,
         OrderErrorMessage: null,

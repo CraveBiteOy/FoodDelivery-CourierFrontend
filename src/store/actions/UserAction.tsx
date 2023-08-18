@@ -8,6 +8,7 @@ import { RootStackParamList } from "../../navigators/MyStack";
 
 
 export const login = (loginForm: LoginForm, navigation: NativeStackNavigationProp<RootStackParamList>) => async (dispatch: Dispatch<ACTION>, getState: any) => {
+  dispatch(loadingStart());
   const { username, password, longitude, latitude } = loginForm;
   try {
     const response = await axios.put(`${HOST_URL}/api/users/signIn`, {
@@ -18,14 +19,17 @@ export const login = (loginForm: LoginForm, navigation: NativeStackNavigationPro
     });
     const token = response.headers.authorization || "";
     await AsyncStorage.setItem("token", token);
-    navigation.navigate('Home');
     console.log(response.data)
     dispatch(loginSuccess(response.data));
+    navigation.navigate('Home');
   } catch (error: any) {
     dispatch(loginFailure(error?.response?.data?.messages.toString()));
-    // console.log(error)
     console.log(error.response.data.messages.toString())
+  } finally {
+    dispatch(loadingEnd());
   }
+
+  
 }
 
 const loginSuccess = (data: any) => ({
@@ -115,3 +119,10 @@ const logoutFailure = (error : any) => ({
 });
 
 
+export const loadingStart = () => ({
+  type: "LOADING_START",
+});
+
+export const loadingEnd = () => ({
+  type: "LOADING_END",
+});

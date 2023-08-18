@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -14,13 +14,16 @@ import { RootState } from '../store/store';
 import { OrderStatus } from '../model/OrderModel';
 import ErrorModal from '../components/ErrorModal';
 import { ThemeType, useTheme } from "../styles/theme";
+import LoadingIndicator from '../components/LoadingIndicator';
+import { resetOrderError } from '../store/actions/OrderAction';
 
 
 const Home = () => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-  const { activeOrder, orderItems, isOrderError, OrderErrorMessage } = useSelector((state: RootState) => state.ORDERS);
-  const {courier, isCourierError, CourierErrorMessage} = useSelector((state: RootState) => state.COURIERS);
+  const { activeOrder, orderItems, isOrderError, OrderErrorMessage, orderLoading } = useSelector((state: RootState) => state.ORDERS);
+  const { courier, isCourierError, CourierErrorMessage } = useSelector((state: RootState) => state.COURIERS);
+  const {loading} = useSelector((state: RootState) => state.USERS);
   const dispatch = useDispatch();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const [currentSnapPoint, setCurrentSnapPoint] = useState(0);
@@ -32,29 +35,32 @@ const Home = () => {
   const snapPoints = [100, 400, 600];
 
 
-  const toggleMenu = () => {
+  const toggleMenu = useCallback(() => {
     setIsMenuVisible((prevState) => !prevState);
-  };
+  }
+  , [isMenuVisible]);
 
-  const handleProfilePress = () => {
-    setIsMenuVisible(false);
-    navigation.navigate('Profile');
-  };
+  const handleProfilePress = useCallback(() => {
+  setIsMenuVisible(false);
+  navigation.navigate('Profile');
+  }, [navigation]);
 
-  const handleTransportationPress = () => {
+  const handleTransportationPress = useCallback(() => {
     setIsMenuVisible(false);
     navigation.navigate('Transportation');
-  };
+  }, [navigation]);
 
-  const handleAboutPress = () => {
+  const handleAboutPress = useCallback(() => {
     setIsMenuVisible(false);
     navigation.navigate('UpdateLocation');
-  };
+  }
+  , [navigation]);
 
-  const handleLogoutPress = () => {
+  const handleLogoutPress = useCallback(() => {
     setIsMenuVisible(false);
     logoutUtil(dispatch, navigation);
-  };
+  }
+  , [navigation]);
 
   const handleOrderStageChange = (orderStatus: OrderStatus) => {
     if (orderStatus === OrderStatus.SENT_TO_COUIER) {
@@ -71,20 +77,22 @@ const Home = () => {
       handleOrderStageChange(activeOrder.status);
     }
      bottomSheetModalRef.current?.present();
-  }, [activeOrder]);
+  }, [activeOrder, loading, orderLoading]);
 
 
   useEffect(() => {
-    if(isOrderError || isCourierError) {
-      setErrorMsg(OrderErrorMessage || CourierErrorMessage);
+    if(isOrderError) {
+      setErrorMsg(OrderErrorMessage);
       setIsErrorVisible(true);
+      dispatch(resetOrderError());
     }
+  }, [isOrderError]);
+  console.log("the status of error of order is : "+ isOrderError)
 
-    console.log('isErrorVisible: ', isErrorVisible);
-    console.log('isOrderError: ', isOrderError);
-    console.log('errorMsg: ', errorMsg);
-  }, [isOrderError, isCourierError]);
-
+  // show loading indicator while logging in, rendering order stages and fetching order items.
+   if (loading || orderLoading) {
+        return <LoadingIndicator />;
+    }
 
   return (
     <BottomSheetModalProvider>
@@ -129,6 +137,7 @@ const Home = () => {
             orderStatus={activeOrder?.status}
             orderItems={orderItems}
             isCourierError={isCourierError}
+            orderLoading={orderLoading}
               />
         </BottomSheetModal>
       </View>

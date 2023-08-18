@@ -18,6 +18,7 @@ export interface declaredStateUser  {
     authSuccess: boolean,
     authError: boolean
     courier: any;
+    loading: boolean;
     
 }
 

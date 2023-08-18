@@ -15,9 +15,10 @@ export type SheetProps = {
   orderStatus: OrderStatus;
   orderItems: OrderItem[] | [];
   isCourierError: boolean;
+  orderLoading: boolean;
 };
 
-const Sheet = ({ activeOrder, courier, orderStatus, orderItems, isCourierError }: SheetProps) => {
+const Sheet = ({ activeOrder, courier, orderStatus, orderItems, isCourierError, orderLoading }: SheetProps) => {
   
   
   const dispatch = useDispatch();
@@ -49,7 +50,7 @@ const Sheet = ({ activeOrder, courier, orderStatus, orderItems, isCourierError }
   else {
     switch (orderStatus) {
       case OrderStatus.SENT_TO_COUIER:
-        content = <NotificationView activeOrder={activeOrder} onComplete={handleComplete}/>;
+        content = <NotificationView activeOrder={activeOrder} onComplete={handleComplete} orderLoading={orderLoading}/>;
         break;
       case OrderStatus.ACCEPTED:
         content = <PickUpView activeOrder={activeOrder} orderItems={orderItems} />;

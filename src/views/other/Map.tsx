@@ -6,6 +6,8 @@ import { getLocation } from '../../utils/location';
 import { Order, OrderStatus } from '../../model/OrderModel';
 import CountdownTimer from '../../components/CountdownTimer';
 import { Courier } from '../../model/CourierModel';
+import { ThemeType, darkTheme, useTheme } from '../../styles/theme';
+import {darkMapStyle} from '../../constants/darkMapStyle';
 
 
 const OULU_LATITUDE = 65.014167;
@@ -14,7 +16,8 @@ const OULU_LONGITUDE = 25.471944;
 
 type MapProps = {
   activeOrder: Order;
-  courier: Courier ;
+  courier: Courier;
+
 }
 const Map = ({ activeOrder, courier }: MapProps) => {
 
@@ -24,6 +27,9 @@ const Map = ({ activeOrder, courier }: MapProps) => {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
+
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
 
   useEffect(() => {
     const getCurrentLocation = async () => {
@@ -50,9 +56,15 @@ const Map = ({ activeOrder, courier }: MapProps) => {
     getCurrentLocation();
   }, [courier]);
 
+  console.log('activeOrder', activeOrder.status);
+
+
   return (
     <View style={styles.container}>
-      <MapView style={styles.map} region={region} >
+      <MapView
+        style={styles.map}
+        region={region}
+        customMapStyle={theme === darkTheme ? darkMapStyle : []}>
         <Marker
           coordinate={{
             latitude: region.latitude,
@@ -65,8 +77,9 @@ const Map = ({ activeOrder, courier }: MapProps) => {
             style={{ width: 35, height: 35 }}
           />
         </Marker>
-        {activeOrder.status === OrderStatus.ACCEPTED && activeOrder.restaurant && (
+        {activeOrder.status ===  OrderStatus.READY  && activeOrder.restaurant && (
             <Marker
+              key="restaurantMarker"
               coordinate={{
                 latitude: activeOrder?.restaurant?.latitude,
                 longitude: activeOrder?.restaurant?.longitude,
@@ -77,16 +90,20 @@ const Map = ({ activeOrder, courier }: MapProps) => {
             >
           <View style={styles.markerView}>
             <Text style={styles.markerText}>Pick up </Text>
-            <CountdownTimer duration={activeOrder?.pickedupTime * 60} timeFormat='minutes' />
+              <CountdownTimer
+                key={activeOrder.id}
+                duration={activeOrder?.pickedupTime * 60}
+                timeFormat='minutes' />
           </View>
           <Image
-            source={require('../../assets/orange_marker.png')}
-            style={{ width: 30, height: 49 }}
+            source={require('../../assets/restaurant.png')}
+            style={{ width: 35, height: 49 }}
           />
         </Marker>
         )}
          {activeOrder.status === OrderStatus.PICKED_UP && activeOrder.customer && (
         <Marker
+          key="customerMarker"
           coordinate={{
             latitude: activeOrder?.customer?.user?.latitude,
             longitude: activeOrder?.customer?.user?.longitude,
@@ -97,11 +114,14 @@ const Map = ({ activeOrder, courier }: MapProps) => {
         >
           <View style={styles.markerView}>
           <Text style={styles.markerText}>Drop off </Text>
-          <CountdownTimer duration={activeOrder?.dropOffTime * 60} timeFormat='minutes' />
+              <CountdownTimer
+                key={activeOrder.id}
+                duration={activeOrder?.pickedupTime * 60}
+                timeFormat='minutes' />
         </View>
         <Image
-          source={require('../../assets/orange_marker.png')}
-          style={{ width: 30, height: 49 }}
+          source={require('../../assets/customer.png')}
+          style={{ width: 35, height: 49 }}
         />
       </Marker>
         )}
@@ -109,8 +129,9 @@ const Map = ({ activeOrder, courier }: MapProps) => {
     </View>
   );
 };
+  
 
-const styles = StyleSheet.create({
+  const getStyles = (theme: ThemeType) => StyleSheet.create({
   container: {
     flex: 1,
   },
@@ -126,12 +147,12 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   markerText: {
-    color: 'black',
+    color:theme.color,
     fontWeight: 'bold',
      borderRadius: 10,
     borderWidth: 1.5,
     borderColor: 'orange',
-    backgroundColor: 'white',
+    backgroundColor: theme.primary,
     padding: 5,
      marginBottom: 1,
   },
@@ -143,4 +164,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Map;
+// export default Map;
+export default React.memo(Map);

@@ -36,7 +36,7 @@ type DefaultViewProps = {
   //check if the courier is new to the system or not
   useEffect(() => {
     if (isCourierError) {
-        console.log(isCourierError);
+        console.log("are u new here: "+ isCourierError);
         navigation.navigate('Transportation');
       }
   }
@@ -68,7 +68,6 @@ type DefaultViewProps = {
 
   const getStyles = (theme: ThemeType) => StyleSheet.create({
     container: {
-    // backgroundColor: theme.backgroundColor,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
