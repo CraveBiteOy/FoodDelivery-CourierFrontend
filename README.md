@@ -14,7 +14,7 @@ The Food delivery project includes 5 repositories and was developed by Quan Doan
 - Courier mobile: Hajri Mohamed
 
 # Video demo for courier app
-link: 
+link: https://youtu.be/exV2ZpUaY4E
 
 ## Features of CourierFrontend
 
